@@ -56,6 +56,18 @@ int16_t P3T1755::read( uint8_t reg )
 	return tmp;
 }
 
+void P3T1755::ccc_set( uint8_t ccc, uint8_t data )
+{
+	_i3c.ccc_set( ccc, _addr, data );
+}
+
+uint8_t* P3T1755::ccc_get( uint8_t ccc, uint8_t *dp, uint8_t length )
+{
+	_i3c.ccc_get( ccc, _addr, dp, length );
+	
+	return dp;
+}
+
 float P3T1755::short2celsius( int16_t v )
 {
 	return (float)(swap_bytes( v )) / 256.0;

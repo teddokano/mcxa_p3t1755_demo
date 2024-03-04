@@ -40,30 +40,18 @@ extern "C" {
 #define EXAMPLE_I2C_FREQ		400000UL
 
 void		DAA_set_dynamic_ddress_from_static_ddress( uint8_t dynamic_address, uint8_t static_address );
-float		temp_sensor_setting( uint8_t addr, uint8_t config );
-void		temp_sensor_reg_dump( uint8_t addr );
-float		read_temp( uint8_t targ, uint8_t reg );
-void		write_temp( uint8_t targ, uint8_t reg, float v );
-float		short2celsius( int16_t v );
-int16_t		celsius2short( float v );
-int16_t		swap_bytes( int16_t v );
-void		wait( float delayTime_sec );
+void		temp_sensor_reg_dump( void );
 
 __attribute__((constructor)) void start_mcu() {
 	init_mcu();
 	PRINTF("\r\n********************\r\n");
 }
 
-
 I3C		i3c( EXAMPLE_I2C_FREQ, EXAMPLE_I3C_OD_FREQ, EXAMPLE_I3C_PP_FREQ );
 P3T1755	p3t1755( i3c, P3T1755_ADDR_I3C );
 
 extern	I3C	i3c;
 
-
-/*
- * @brief   Application entry point.
- */
 int main(void)
 {
 	init_demo();
@@ -83,9 +71,9 @@ int main(void)
 	PRINTF( "      based on current temperature: %8.4f˚C\r\n", ref_temp );
 
 	p3t1755.conf( p3t1755.conf() | 0x02 );			//	ALART pin configured to INT mode
-	i3c.ccc_set( CCC::DIRECT_ENEC, P3T1755_ADDR_I3C, 0x01 );	// Enable IBI
+	p3t1755.ccc_set( CCC::DIRECT_ENEC, 0x01 );	// Enable IBI
 
-	temp_sensor_reg_dump( P3T1755_ADDR_I3C );
+	temp_sensor_reg_dump();
 
 	float	temp;
 	uint8_t	ibi_addr;
@@ -109,7 +97,7 @@ void DAA_set_dynamic_ddress_from_static_ddress( uint8_t dynamic_address, uint8_t
 	i3c.ccc_set( CCC::DIRECT_SETDASA, static_address, dynamic_address << 1 ); // Set Dynamic Address from Static Address
 }
 
-void temp_sensor_reg_dump( uint8_t addr )
+void temp_sensor_reg_dump( void )
 {
 	uint8_t		pid[ PID_LENGTH ];
 	uint8_t		bcr, dcr;
@@ -119,9 +107,9 @@ void temp_sensor_reg_dump( uint8_t addr )
 	float	h	= p3t1755.high();
 	float	l	= p3t1755.low();
 	
-	i3c.ccc_get( CCC::DIRECT_GETPID, addr, pid, sizeof( pid ) );
-	i3c.ccc_get( CCC::DIRECT_GETBCR, addr, &bcr, 1 );
-	i3c.ccc_get( CCC::DIRECT_GETDCR, addr, &dcr, 1 );
+	p3t1755.ccc_get( CCC::DIRECT_GETPID, pid, sizeof( pid ) );
+	p3t1755.ccc_get( CCC::DIRECT_GETBCR, &bcr, 1 );
+	p3t1755.ccc_get( CCC::DIRECT_GETDCR, &dcr, 1 );
 
 	PRINTF( "\r\nRegister dump - I3C target address:7’h%02X (0x%02X)\r\n", P3T1755_ADDR_I3C, P3T1755_ADDR_I3C << 1 );
 	PRINTF( "  - Temp   (0x0): 0x%04X (%8.4f˚C)\r\n", (uint16_t)P3T1755::celsius2short( t ), t );

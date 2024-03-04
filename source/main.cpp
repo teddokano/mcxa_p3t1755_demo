@@ -27,18 +27,6 @@ extern "C" {
 #include "i3c/i3c.h"
 #include "demo/demo.h"
 
-//#define	HIGHER_SCL_FREQ
-
-#ifdef	HIGHER_SCL_FREQ
-#define EXAMPLE_I3C_OD_FREQ		4000000UL
-#define EXAMPLE_I3C_PP_FREQ		12500000UL
-#else
-#define EXAMPLE_I3C_OD_FREQ		1500000UL
-#define EXAMPLE_I3C_PP_FREQ		4000000UL
-#endif //HIGHER_SCL_FREQ
-
-#define EXAMPLE_I2C_FREQ		400000UL
-
 void		DAA_set_dynamic_ddress_from_static_ddress( uint8_t dynamic_address, uint8_t static_address );
 void		temp_sensor_reg_dump( void );
 
@@ -47,8 +35,8 @@ __attribute__((constructor)) void start_mcu() {
 	PRINTF("\r\n********************\r\n");
 }
 
-I3C		i3c( EXAMPLE_I2C_FREQ, EXAMPLE_I3C_OD_FREQ, EXAMPLE_I3C_PP_FREQ );
-P3T1755	p3t1755( i3c, P3T1755_ADDR_I3C );
+I3C		i3c;
+P3T1755	p3t1755( i3c );
 
 extern	I3C	i3c;
 

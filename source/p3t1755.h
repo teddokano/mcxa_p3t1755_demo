@@ -8,7 +8,22 @@
 #define P3T1755_ADDR_I3C			0x08U
 #define P3T1755_CONFIG_VALUE		0x2A
 
-class P3T1755 {
+class I3C_Device
+{
+public:
+	I3C_Device( I3C &i3c, uint8_t address );
+	~I3C_Device();
+
+	virtual void		ccc_set( uint8_t ccc, uint8_t data );
+	virtual uint8_t*	ccc_get( uint8_t ccc, uint8_t *dp, uint8_t length );
+
+protected:
+	I3C&	_i3c;
+	uint8_t	_addr;	
+};
+
+class P3T1755 : public I3C_Device
+{
 public:
 	enum	registers {
 		Temp,
@@ -17,7 +32,7 @@ public:
 		T_HIGH,
 	};
 
-	P3T1755( I3C &i3c, uint8_t address = 0x48 );
+	P3T1755( I3C &i3c, uint8_t address = P3T1755_ADDR_I3C );
 	~P3T1755();
 	
 	float		temp( void );
@@ -34,9 +49,6 @@ public:
 	void 		write( uint8_t reg, float v );
 	int16_t 	read( uint8_t reg );
 
-	void		ccc_set( uint8_t ccc, uint8_t data );
-	uint8_t*	ccc_get( uint8_t ccc, uint8_t *dp, uint8_t length );
-
 	void		info( void );
 	
 	static float	short2celsius( int16_t v );
@@ -48,6 +60,4 @@ public:
 	operator	float();
 
 private:
-	I3C&	_i3c;
-	uint8_t	_addr;
 };

@@ -5,8 +5,25 @@ extern "C" {
 #include "fsl_debug_console.h"
 }
 
+I3C_Device::I3C_Device( I3C &i3c, uint8_t address ) : _i3c( i3c ), _addr( address ) {}
+I3C_Device::~I3C_Device(){}
 
-P3T1755::P3T1755( I3C &i3c, uint8_t address ) : _i3c( i3c ), _addr( address ) {}
+void I3C_Device::ccc_set( uint8_t ccc, uint8_t data )
+{
+	_i3c.ccc_set( ccc, _addr, data );
+}
+
+uint8_t* I3C_Device::ccc_get( uint8_t ccc, uint8_t *dp, uint8_t length )
+{
+	_i3c.ccc_get( ccc, _addr, dp, length );
+	
+	return dp;
+}
+
+
+
+
+P3T1755::P3T1755( I3C &i3c, uint8_t address ) : I3C_Device( i3c, address ) {}
 P3T1755::~P3T1755(){}
 
 float P3T1755::temp( void )
@@ -59,18 +76,6 @@ int16_t P3T1755::read( uint8_t reg )
 	_i3c.reg_read( _addr, reg, (uint8_t *)&tmp, sizeof( tmp ) );
 	
 	return tmp;
-}
-
-void P3T1755::ccc_set( uint8_t ccc, uint8_t data )
-{
-	_i3c.ccc_set( ccc, _addr, data );
-}
-
-uint8_t* P3T1755::ccc_get( uint8_t ccc, uint8_t *dp, uint8_t length )
-{
-	_i3c.ccc_get( ccc, _addr, dp, length );
-	
-	return dp;
 }
 
 void P3T1755::info( void )

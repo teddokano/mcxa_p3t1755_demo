@@ -5,4 +5,5 @@
  *
  */
 
+#define	LOWER_SCL_FREQ
 #define	IBI_TRIGGER_OUTPUT	A2

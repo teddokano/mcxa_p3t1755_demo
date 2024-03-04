@@ -13,10 +13,21 @@
 #define R01LIB_I3C_H
 
 
+#include "config.h"
 #include "fsl_i3c.h"
 
 #define I3C_BROADCAST_ADDR		0x7E
 #define	PID_LENGTH				6
+
+#ifdef	LOWER_SCL_FREQ
+#define I3C_OD_FREQ		1500000UL
+#define I3C_PP_FREQ		4000000UL
+#else
+#define I3C_OD_FREQ		4000000UL
+#define I3C_PP_FREQ		12500000UL
+#endif //HIGHER_SCL_FREQ
+
+#define I2C_FREQ		400000UL
 
 enum CCC
 {
@@ -38,7 +49,7 @@ typedef void (*i3c_func_ptr)(void);
 
 class I3C {
 public:
-	I3C( uint32_t i2c_freq, uint32_t i3c_od_freq, uint32_t i3c_pp_freq );
+	I3C( uint32_t i2c_freq = I2C_FREQ, uint32_t i3c_od_freq = I3C_OD_FREQ, uint32_t i3c_pp_freq = I3C_PP_FREQ );
 	~I3C();
 	
 	status_t	reg_write( uint8_t targ, uint8_t reg, const uint8_t *dp, int length );
@@ -57,6 +68,7 @@ public:
 	static void		master_callback( I3C_Type *base, i3c_master_handle_t *handle, status_t status, void *userData );
 private:
 	static const	i3c_master_transfer_callback_t	masterCallback;
+	static uint8_t	device_list[ 128 ];
 };
 
 #endif // R01LIB_I3C_H

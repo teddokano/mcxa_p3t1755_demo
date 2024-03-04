@@ -68,7 +68,6 @@ public:
 	static void		master_callback( I3C_Type *base, i3c_master_handle_t *handle, status_t status, void *userData );
 private:
 	static const	i3c_master_transfer_callback_t	masterCallback;
-	static uint8_t	device_list[ 128 ];
 };
 
 #endif // R01LIB_I3C_H

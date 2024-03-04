@@ -5,8 +5,17 @@ extern "C" {
 #include "fsl_debug_console.h"
 }
 
-I3C_Device::I3C_Device( I3C &i3c, uint8_t address ) : _i3c( i3c ), _addr( address ) {}
+I3C_Device::I3C_Device( I3C &i3c, uint8_t address ) : _i3c( i3c ), _addr( address )
+{
+	
+}
+
 I3C_Device::~I3C_Device(){}
+
+void I3C_Device::address_overwrite( uint8_t address )
+{
+	_addr	= address;
+}
 
 void I3C_Device::ccc_set( uint8_t ccc, uint8_t data )
 {

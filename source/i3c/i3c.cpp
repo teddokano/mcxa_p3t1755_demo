@@ -197,5 +197,3 @@ const i3c_master_transfer_callback_t	I3C::masterCallback = {
 	.ibiCallback		= master_ibi_callback,
 	.transferComplete	= master_callback
 };
-
-uint8_t	device_list[ 128 ]	= { 0 };

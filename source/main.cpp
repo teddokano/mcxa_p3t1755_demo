@@ -47,7 +47,8 @@ int main(void)
 	PRINTF("\r\nP3T1755 (Temperature sensor) I3C operation sample: getting temperature data and IBI\r\n");
 
 	DAA_set_dynamic_ddress_from_static_ddress( P3T1755_ADDR_I3C, P3T1755_ADDR_I2C );
-
+	p3t1755.address_overwrite( P3T1755_ADDR_I3C );
+	
 	float ref_temp	= p3t1755.temp();
 	float low		= ref_temp + 1.0;
 	float high		= ref_temp + 2.0;

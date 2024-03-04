@@ -44,7 +44,7 @@ float P3T1755::low( void )
 
 void P3T1755::write( uint8_t reg, float v )
 {
-	uint16_t	tmp	= celsius2short( v );
+	uint16_t	tmp	= swap_bytes( celsius2short( v ) );
 	_i3c.reg_write( _addr, reg, (uint8_t *)&tmp, sizeof( tmp ) );
 }
 
@@ -63,7 +63,7 @@ float P3T1755::short2celsius( int16_t v )
 
 int16_t P3T1755::celsius2short( float v )
 {
-	return swap_bytes( (uint16_t)(v * 256.0) );
+	return (uint16_t)(v * 256.0);
 }
 
 int16_t	P3T1755::swap_bytes( int16_t v )
@@ -74,3 +74,9 @@ int16_t	P3T1755::swap_bytes( int16_t v )
 	return (v << 8) | ((uint16_t)v >> 8);
 #endif
 }
+
+P3T1755::operator float()
+{
+	return temp();
+}
+

@@ -86,7 +86,7 @@ int main(void)
 		if ( (ibi_addr	= i3c.check_IBI()) )
 			PRINTF("*** IBI : Got IBI from target_address: 7’h%02X (0x%02X)\r\n", ibi_addr, ibi_addr << 1 );
 
-		temp	= p3t1755.temp();
+		temp	= p3t1755;
 		PRINTF( "Temperature: %8.4f˚C\r\n", temp );
 		demo( temp, &ref_temp, temp_sensor_setting );
 		wait( 1 );
@@ -127,7 +127,7 @@ void temp_sensor_reg_dump( uint8_t addr )
 	uint8_t		pid[ PID_LENGTH ];
 	uint8_t		bcr, dcr;
 
-	t	= p3t1755.temp();
+	t	= p3t1755;
 	c	= p3t1755.conf();
 	h	= p3t1755.high();
 	l	= p3t1755.low();
@@ -137,10 +137,10 @@ void temp_sensor_reg_dump( uint8_t addr )
 	i3c.ccc_get( CCC::DIRECT_GETDCR, addr, &dcr, 1 );
 
 	PRINTF( "\r\nRegister dump - I3C target address:7’h%02X (0x%02X)\r\n", P3T1755_ADDR_I3C, P3T1755_ADDR_I3C << 1 );
-	PRINTF( "  - Temp   (0x0): 0x%04X (%8.4f˚C)\r\n", P3T1755::celsius2short( t ), t );
+	PRINTF( "  - Temp   (0x0): 0x%04X (%8.4f˚C)\r\n", (uint16_t)P3T1755::celsius2short( t ), t );
 	PRINTF( "  - Conf   (0x1): 0x  %02X\r\n", c );
-	PRINTF( "  - T_LOW  (0x2): 0x%04X (%8.4f˚C)\r\n", P3T1755::celsius2short( l ), l );
-	PRINTF( "  - T_HIGH (0x3): 0x%04X (%8.4f˚C)\r\n", P3T1755::celsius2short( h ), h );
+	PRINTF( "  - T_LOW  (0x2): 0x%04X (%8.4f˚C)\r\n", (uint16_t)P3T1755::celsius2short( l ), l );
+	PRINTF( "  - T_HIGH (0x3): 0x%04X (%8.4f˚C)\r\n", (uint16_t)P3T1755::celsius2short( h ), h );
 
 	PRINTF( "  * PID    (CCC:Provisioned ID)                 : 0x" );
 	for ( int i = 0; i < PID_LENGTH; i++ ) PRINTF( " %02X", pid[ i ] );	PRINTF( "\r\n" );

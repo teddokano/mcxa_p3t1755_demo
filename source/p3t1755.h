@@ -38,6 +38,10 @@ public:
 	static int16_t	celsius2short( float v );
 	static int16_t	swap_bytes( int16_t v );
 
+	/** A short hand for reading pins
+	 */
+	operator	float();
+
 private:
 	I3C&	_i3c;
 	uint8_t	_addr;

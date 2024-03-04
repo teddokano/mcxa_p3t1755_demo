@@ -1,4 +1,4 @@
-#include	"i3c/i3c.h"
+#include	"i3c.h"
 #include	"P3T1755.h"
 
 extern "C" {

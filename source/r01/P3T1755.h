@@ -5,7 +5,7 @@
 #ifndef R01LIB_P3T1755_H
 #define R01LIB_P3T1755_H
 
-#include	"i3c/i3c.h"
+#include	"i3c.h"
 
 #define P3T1755_ADDR_I2C			0x48U
 #define P3T1755_ADDR_I3C			0x08U

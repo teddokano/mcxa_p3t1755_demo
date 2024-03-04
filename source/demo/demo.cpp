@@ -16,8 +16,8 @@ extern "C" {
 #include	"p3t1755.h"
 }
 
-#include	"i3c/i3c.h"
-#include	"demo/demo.h"
+#include	"i3c.h"
+#include	"demo.h"
 
 void trigger_output( void );
 

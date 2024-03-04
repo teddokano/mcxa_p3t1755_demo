@@ -5,7 +5,7 @@
  *
  */
 
-#include "fsl_gpio.h"
+#include	"fsl_gpio.h"
 
 #include	"mcu.h"
 #include	"pin.h"
@@ -66,8 +66,6 @@ void pin_write( int num, bool value )
 	GPIO_PinWrite( pins[ num ].base, pins[ num ].pin, value );
 }
 
-
-#include	"mcu.h"
 
 void pin_test( void )
 {

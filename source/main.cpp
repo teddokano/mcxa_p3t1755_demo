@@ -15,8 +15,8 @@ extern "C" {
 
 #include	"config.h"
 #include	"P3T1755.h"
-#include	"i3c/i3c.h"
-#include	"demo/demo.h"
+#include	"i3c.h"
+#include	"demo.h"
 #include	"mcu.h"
 
 void	DAA_set_dynamic_ddress_from_static_ddress( uint8_t dynamic_address, uint8_t static_address );

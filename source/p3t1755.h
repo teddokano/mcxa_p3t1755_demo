@@ -31,7 +31,7 @@ public:
 	void		low(  float temp );
 	float		low(  void );
 
-	float 		write( uint8_t reg, int16_t v );
+	void 		write( uint8_t reg, float v );
 	int16_t 	read( uint8_t reg );
 
 	static float	short2celsius( int16_t v );

@@ -6,10 +6,7 @@ P3T1755::~P3T1755(){}
 
 float P3T1755::temp( void )
 {
-	uint16_t	tmp;
-	
-	_i3c.reg_read( _addr, 0x00, (uint8_t *)&tmp, sizeof( tmp ) );
-	return short2celsius( tmp );
+	return short2celsius( read( Temp ) );
 }
 
 void P3T1755::conf( uint8_t config )
@@ -45,7 +42,7 @@ float P3T1755::low( void )
 	return short2celsius( read( T_LOW ) );
 }
 
-float P3T1755::write( uint8_t reg, int16_t v )
+void P3T1755::write( uint8_t reg, float v )
 {
 	uint16_t	tmp	= celsius2short( v );
 	_i3c.reg_write( _addr, reg, (uint8_t *)&tmp, sizeof( tmp ) );
@@ -53,16 +50,15 @@ float P3T1755::write( uint8_t reg, int16_t v )
 
 int16_t P3T1755::read( uint8_t reg )
 {
-	int16_t	tmp;
-	_i3c.reg_write( _addr, reg, (uint8_t *)&tmp, sizeof( tmp ) );
+	uint16_t	tmp;
+	_i3c.reg_read( _addr, reg, (uint8_t *)&tmp, sizeof( tmp ) );
 	
 	return tmp;
 }
 
 float P3T1755::short2celsius( int16_t v )
 {
-	static const float	k	= 1 / 256.0;
-	return (float)(swap_bytes( v )) * k;
+	return (float)(swap_bytes( v )) / 256.0;
 }
 
 int16_t P3T1755::celsius2short( float v )
@@ -70,11 +66,11 @@ int16_t P3T1755::celsius2short( float v )
 	return swap_bytes( (uint16_t)(v * 256.0) );
 }
 
-int16_t P3T1755::swap_bytes( int16_t v )
+int16_t	P3T1755::swap_bytes( int16_t v )
 {
 #ifdef __BIG_ENDIAN__
 	return v;
-#else
+#else	
 	return (v << 8) | ((uint16_t)v >> 8);
 #endif
 }

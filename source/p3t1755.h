@@ -2,13 +2,43 @@
  * Copyright 2024 Tedd OKANO
  */
 
+#include	"i3c/i3c.h"
+
 #define P3T1755_ADDR_I2C			0x48U
 #define P3T1755_ADDR_I3C			0x08U
 #define P3T1755_CONFIG_VALUE		0x2A
 
-enum	{
-	P3T1755_REG_Temp,
-	P3T1755_REG_Conf,
-	P3T1755_REG_T_LOW,
-	P3T1755_REG_T_HIGH,
+class P3T1755 {
+public:
+	enum	registers {
+		Temp,
+		Conf,
+		T_LOW,
+		T_HIGH,
+	};
+
+	P3T1755( I3C &i3c, uint8_t address = 0x48 );
+	~P3T1755();
+	
+	float		temp( void );
+	
+	void		conf( uint8_t conf );
+	uint8_t		conf( void );
+	
+	void		high( float temp );
+	float		high( void );
+	
+	void		low(  float temp );
+	float		low(  void );
+
+	float 		write( uint8_t reg, int16_t v );
+	int16_t 	read( uint8_t reg );
+
+	static float	short2celsius( int16_t v );
+	static int16_t	celsius2short( float v );
+	static int16_t	swap_bytes( int16_t v );
+
+private:
+	I3C&	_i3c;
+	uint8_t	_addr;
 };

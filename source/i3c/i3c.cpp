@@ -9,6 +9,7 @@
  *    "lpcxpresso860max_i3c_master_read_sensor_icm42688p" from SDK_2.15.000_LPCXpresso860MAX
  */
 
+
 extern "C" {
 #include	<string.h>
 #include	"fsl_i3c.h"

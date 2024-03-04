@@ -9,6 +9,10 @@
  *    "lpcxpresso860max_i3c_master_read_sensor_icm42688p" from SDK_2.15.000_LPCXpresso860MAX
  */
 
+#ifndef R01LIB_I3C_H
+#define R01LIB_I3C_H
+
+
 #include "fsl_i3c.h"
 
 #define I3C_BROADCAST_ADDR		0x7E
@@ -29,7 +33,6 @@ enum CCC
 	DIRECT_GETSTATUS	= 0x90,
 	DIRECT_RSTACT		= 0x90
 };
-
 
 typedef void (*i3c_func_ptr)(void); 
 
@@ -55,3 +58,5 @@ public:
 private:
 	static const	i3c_master_transfer_callback_t	masterCallback;
 };
+
+#endif // R01LIB_I3C_H

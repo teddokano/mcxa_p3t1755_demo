@@ -72,9 +72,18 @@ int main(void)
 
 	DAA_set_dynamic_ddress_from_static_ddress( P3T1755_ADDR_I3C, P3T1755_ADDR_I2C );
 
-	float	ref_temp;
-	ref_temp	= temp_sensor_setting( P3T1755_ADDR_I3C, P3T1755_CONFIG_VALUE );
-	PRINTF( "  T_LOW / T_HIGH registers are set based on current temperature: %8.4f˚C\r\n", ref_temp );
+	float ref_temp	= p3t1755.temp();
+	float low		= ref_temp + 1.0;
+	float high		= ref_temp + 2.0;
+
+	p3t1755.high( high );
+	p3t1755.low(  low  );
+
+	PRINTF( "  T_LOW / T_HIGH registers updated: %8.4f˚C / %8.4f˚C\r\n", low, high );
+	PRINTF( "      based on current temperature: %8.4f˚C\r\n", ref_temp );
+
+	p3t1755.conf( p3t1755.conf() | 0x02 );			//	ALART pin configured to INT mode
+	i3c.ccc_set( CCC::DIRECT_ENEC, P3T1755_ADDR_I3C, 0x01 );	// Enable IBI
 
 	temp_sensor_reg_dump( P3T1755_ADDR_I3C );
 
@@ -88,7 +97,8 @@ int main(void)
 
 		temp	= p3t1755;
 		PRINTF( "Temperature: %8.4f˚C\r\n", temp );
-		demo( temp, &ref_temp, temp_sensor_setting );
+
+		demo( temp, &ref_temp );
 		wait( 1 );
 	}
 }
@@ -99,38 +109,15 @@ void DAA_set_dynamic_ddress_from_static_ddress( uint8_t dynamic_address, uint8_t
 	i3c.ccc_set( CCC::DIRECT_SETDASA, static_address, dynamic_address << 1 ); // Set Dynamic Address from Static Address
 }
 
-float temp_sensor_setting( uint8_t addr, uint8_t config )
-{
-	float	temp, high, low;
-
-	p3t1755.conf( config );
-
-	temp	= p3t1755.temp();
-	low		= temp + 1.0;
-	high	= temp + 2.0;
-
-	p3t1755.high( high );
-	p3t1755.low(  low  );
-	
-	//	Enable IBI
-	i3c.ccc_set( CCC::DIRECT_ENEC, addr, 0x01 );
-
-	PRINTF( "  T_LOW / T_HIGH registers updated: %8.4f˚C / %8.4f˚C\r\n", low, high );
-
-	return temp;
-}
-
 void temp_sensor_reg_dump( uint8_t addr )
 {
-	float		t, l, h;
-	uint8_t		c;
 	uint8_t		pid[ PID_LENGTH ];
 	uint8_t		bcr, dcr;
 
-	t	= p3t1755;
-	c	= p3t1755.conf();
-	h	= p3t1755.high();
-	l	= p3t1755.low();
+	float	t	= p3t1755;
+	uint8_t	c	= p3t1755.conf();
+	float	h	= p3t1755.high();
+	float	l	= p3t1755.low();
 	
 	i3c.ccc_get( CCC::DIRECT_GETPID, addr, pid, sizeof( pid ) );
 	i3c.ccc_get( CCC::DIRECT_GETBCR, addr, &bcr, 1 );

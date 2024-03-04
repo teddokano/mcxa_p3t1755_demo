@@ -37,6 +37,8 @@ public:
 	void		ccc_set( uint8_t ccc, uint8_t data );
 	uint8_t*	ccc_get( uint8_t ccc, uint8_t *dp, uint8_t length );
 
+	void		info( void );
+	
 	static float	short2celsius( int16_t v );
 	static int16_t	celsius2short( float v );
 	static int16_t	swap_bytes( int16_t v );

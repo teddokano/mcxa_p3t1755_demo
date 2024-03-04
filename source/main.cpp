@@ -73,7 +73,7 @@ int main(void)
 	p3t1755.conf( p3t1755.conf() | 0x02 );			//	ALART pin configured to INT mode
 	p3t1755.ccc_set( CCC::DIRECT_ENEC, 0x01 );	// Enable IBI
 
-	temp_sensor_reg_dump();
+	p3t1755.info();
 
 	float	temp;
 	uint8_t	ibi_addr;
@@ -97,30 +97,3 @@ void DAA_set_dynamic_ddress_from_static_ddress( uint8_t dynamic_address, uint8_t
 	i3c.ccc_set( CCC::DIRECT_SETDASA, static_address, dynamic_address << 1 ); // Set Dynamic Address from Static Address
 }
 
-void temp_sensor_reg_dump( void )
-{
-	uint8_t		pid[ PID_LENGTH ];
-	uint8_t		bcr, dcr;
-
-	float	t	= p3t1755;
-	uint8_t	c	= p3t1755.conf();
-	float	h	= p3t1755.high();
-	float	l	= p3t1755.low();
-	
-	p3t1755.ccc_get( CCC::DIRECT_GETPID, pid, sizeof( pid ) );
-	p3t1755.ccc_get( CCC::DIRECT_GETBCR, &bcr, 1 );
-	p3t1755.ccc_get( CCC::DIRECT_GETDCR, &dcr, 1 );
-
-	PRINTF( "\r\nRegister dump - I3C target address:7’h%02X (0x%02X)\r\n", P3T1755_ADDR_I3C, P3T1755_ADDR_I3C << 1 );
-	PRINTF( "  - Temp   (0x0): 0x%04X (%8.4f˚C)\r\n", (uint16_t)P3T1755::celsius2short( t ), t );
-	PRINTF( "  - Conf   (0x1): 0x  %02X\r\n", c );
-	PRINTF( "  - T_LOW  (0x2): 0x%04X (%8.4f˚C)\r\n", (uint16_t)P3T1755::celsius2short( l ), l );
-	PRINTF( "  - T_HIGH (0x3): 0x%04X (%8.4f˚C)\r\n", (uint16_t)P3T1755::celsius2short( h ), h );
-
-	PRINTF( "  * PID    (CCC:Provisioned ID)                 : 0x" );
-	for ( int i = 0; i < PID_LENGTH; i++ ) PRINTF( " %02X", pid[ i ] );	PRINTF( "\r\n" );
-	PRINTF( "  * BCR    (CCC:Bus Characteristics Register)   : 0x%02X\r\n", bcr );
-	PRINTF( "  * DCR    (CCC:Device Characteristics Register): 0x%02X (= %s)\r\n", dcr, (0x63 == dcr) ? "Temperature sensor" : "Unknown" );
-
-	PRINTF( "\r\n" );
-}

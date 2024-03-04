@@ -1,6 +1,11 @@
 #include	"i3c/i3c.h"
 #include	"P3T1755.h"
 
+extern "C" {
+#include "fsl_debug_console.h"
+}
+
+
 P3T1755::P3T1755( I3C &i3c, uint8_t address ) : _i3c( i3c ), _addr( address ) {}
 P3T1755::~P3T1755(){}
 
@@ -67,6 +72,35 @@ uint8_t* P3T1755::ccc_get( uint8_t ccc, uint8_t *dp, uint8_t length )
 	
 	return dp;
 }
+
+void P3T1755::info( void )
+{
+	uint8_t		pid[ PID_LENGTH ];
+	uint8_t		bcr, dcr;
+
+	float	t	= temp();
+	uint8_t	c	= conf();
+	float	h	= high();
+	float	l	= low();
+	
+	ccc_get( CCC::DIRECT_GETPID, pid, sizeof( pid ) );
+	ccc_get( CCC::DIRECT_GETBCR, &bcr, 1 );
+	ccc_get( CCC::DIRECT_GETDCR, &dcr, 1 );
+
+	PRINTF( "\r\nRegister dump - I3C target address:7’h%02X (0x%02X)\r\n", P3T1755_ADDR_I3C, P3T1755_ADDR_I3C << 1 );
+	PRINTF( "  - Temp   (0x0): 0x%04X (%8.4f˚C)\r\n", (uint16_t)P3T1755::celsius2short( t ), t );
+	PRINTF( "  - Conf   (0x1): 0x  %02X\r\n", c );
+	PRINTF( "  - T_LOW  (0x2): 0x%04X (%8.4f˚C)\r\n", (uint16_t)P3T1755::celsius2short( l ), l );
+	PRINTF( "  - T_HIGH (0x3): 0x%04X (%8.4f˚C)\r\n", (uint16_t)P3T1755::celsius2short( h ), h );
+
+	PRINTF( "  * PID    (CCC:Provisioned ID)                 : 0x" );
+	for ( int i = 0; i < PID_LENGTH; i++ ) PRINTF( " %02X", pid[ i ] );	PRINTF( "\r\n" );
+	PRINTF( "  * BCR    (CCC:Bus Characteristics Register)   : 0x%02X\r\n", bcr );
+	PRINTF( "  * DCR    (CCC:Device Characteristics Register): 0x%02X (= %s)\r\n", dcr, (0x63 == dcr) ? "Temperature sensor" : "Unknown" );
+
+	PRINTF( "\r\n" );
+}
+
 
 float P3T1755::short2celsius( int16_t v )
 {

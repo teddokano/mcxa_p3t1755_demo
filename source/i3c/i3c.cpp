@@ -59,8 +59,7 @@ I3C::I3C( uint32_t i2c_freq, uint32_t i3c_od_freq, uint32_t i3c_pp_freq )
 	/* Create I3C handle. */
 	I3C_MasterTransferCreateHandle( EXAMPLE_MASTER, &g_i3c_m_handle, &masterCallback, NULL );
 	
-	PRINTF("====================\r\n");
-
+	PRINTF("=== I3C instance had been made ===\r\n");
 }
 
 I3C::~I3C() {}

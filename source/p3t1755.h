@@ -2,6 +2,9 @@
  * Copyright 2024 Tedd OKANO
  */
 
+#ifndef R01LIB_P3T1755_H
+#define R01LIB_P3T1755_H
+
 #include	"i3c/i3c.h"
 
 #define P3T1755_ADDR_I2C			0x48U
@@ -63,3 +66,5 @@ public:
 
 private:
 };
+
+#endif // R01LIB_P3T1755_H

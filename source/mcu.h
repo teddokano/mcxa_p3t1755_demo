@@ -5,7 +5,10 @@
  *
  */
 
+#ifndef R01LIB_MCU_H
+#define R01LIB_MCU_H
+
 void	init_mcu( void );
 void	wait( float delayTime_sec );
 
-void foo();
+#endif

@@ -9,30 +9,21 @@
  *    "lpcxpresso860max_i3c_master_read_sensor_icm42688p" from SDK_2.15.000_LPCXpresso860MAX
  */
 
-/**
- * @file    mcxa_p3t1755_demo.cpp
- * @brief   Application entry point.
- */
-
 extern "C" {
-#include "config.h"
-
-#include "fsl_debug_console.h"
-
-#include "P3T1755.h"
-#include "mcu.h"
-#include "demo/led_control.h"
+#include	"fsl_debug_console.h"
 }
 
-#include "i3c/i3c.h"
-#include "demo/demo.h"
+#include	"config.h"
+#include	"P3T1755.h"
+#include	"i3c/i3c.h"
+#include	"demo/demo.h"
+#include	"mcu.h"
 
-void		DAA_set_dynamic_ddress_from_static_ddress( uint8_t dynamic_address, uint8_t static_address );
-void		temp_sensor_reg_dump( void );
+void	DAA_set_dynamic_ddress_from_static_ddress( uint8_t dynamic_address, uint8_t static_address );
 
 __attribute__((constructor)) void start_mcu() {
 	init_mcu();
-	PRINTF("\r\n********************\r\n");
+	PRINTF("\r\n***  MCU initialized properly  ***\r\n");
 }
 
 I3C		i3c;
@@ -59,7 +50,7 @@ int main(void)
 	PRINTF( "  T_LOW / T_HIGH registers updated: %8.4f˚C / %8.4f˚C\r\n", low, high );
 	PRINTF( "      based on current temperature: %8.4f˚C\r\n", ref_temp );
 
-	p3t1755.conf( p3t1755.conf() | 0x02 );			//	ALART pin configured to INT mode
+	p3t1755.conf( p3t1755.conf() | 0x02 );		//	ALART pin configured to INT mode
 	p3t1755.ccc_set( CCC::DIRECT_ENEC, 0x01 );	// Enable IBI
 
 	p3t1755.info();
@@ -85,4 +76,3 @@ void DAA_set_dynamic_ddress_from_static_ddress( uint8_t dynamic_address, uint8_t
 	i3c.ccc_broadcast( CCC::BROADCAST_RSTDAA, NULL, 0 ); // Reset DAA
 	i3c.ccc_set( CCC::DIRECT_SETDASA, static_address, dynamic_address << 1 ); // Set Dynamic Address from Static Address
 }
-

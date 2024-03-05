@@ -40,6 +40,17 @@ extern	I3C	i3c;
 
 int main(void)
 {
+#if 1	//	DigitalOut LED blinking test
+	red	= 0;
+	green	= 1;
+	while ( 1 )
+	{
+		red		= !red;
+		green	= !green;
+		wait( 1 );
+	}
+#endif
+
 	init_demo();
 
 	PRINTF("\r\nP3T1755 (Temperature sensor) I3C operation sample: getting temperature data and IBI\r\n");

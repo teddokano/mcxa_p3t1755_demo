@@ -7,7 +7,7 @@
 
 extern "C" {
 #include	"fsl_utick.h"
-#include	"demo/pwm.h"
+#include	"pwm.h"
 }
 
 #include	"config.h"

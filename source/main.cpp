@@ -4,20 +4,15 @@
  *
  * SPDX-License-Identifier: BSD-3-Clause
  *
- * This code based on a sample projects:
- *    "frdmmcxa153_i3c_master_read_sensor_p3t1755" from SDK_2.14.2_FRDM-MCXA153 and
- *    "lpcxpresso860max_i3c_master_read_sensor_icm42688p" from SDK_2.15.000_LPCXpresso860MAX
  */
 
 extern "C" {
 #include	"fsl_debug_console.h"
 }
 
+#include	"r01lib.h"
+
 #include	"config.h"
-#include	"P3T1755.h"
-#include	"i3c.h"
-#include	"mcu.h"
-#include	"io.h"
 #include	"pin_control.h"
 
 void	DAA_set_dynamic_ddress_from_static_ddress( uint8_t dynamic_address, uint8_t static_address );

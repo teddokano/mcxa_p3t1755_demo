@@ -6,16 +6,16 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-#include "fsl_debug_console.h"
-#include "pin_mux.h"
-#include "clock_config.h"
-#include "board.h"
-#include "fsl_pwm.h"
+#include	"fsl_debug_console.h"
+#include	"pin_mux.h"
+#include	"clock_config.h"
+#include	"board.h"
+#include	"fsl_pwm.h"
 
-#include "fsl_device_registers.h"
-#include "fsl_inputmux.h"
+#include	"fsl_device_registers.h"
+#include	"fsl_inputmux.h"
 
-#include	"demo/pwm.h"
+#include	"pwm.h"
 
 /*******************************************************************************
  * Definitions

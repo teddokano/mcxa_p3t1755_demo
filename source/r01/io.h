@@ -5,6 +5,9 @@
  *
  */
 
+#ifndef R01LIB_IO_H
+#define R01LIB_IO_H
+
 #include "pin_mux.h"
 #include "clock_config.h"
 #include "board.h"
@@ -133,3 +136,4 @@ public:
 	~DigitalIn();
 };
 
+#endif // R01LIB_IO_H

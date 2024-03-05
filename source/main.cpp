@@ -32,6 +32,9 @@ P3T1755	p3t1755( i3c );
 
 DigitalOut	red( D5 );
 DigitalOut	green( D6 );
+DigitalOut	blue( D3 );
+DigitalOut	trigger( D3 );
+//DigitalOut&	target	= blue;
 
 extern	I3C	i3c;
 

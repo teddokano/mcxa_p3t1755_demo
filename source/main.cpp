@@ -18,6 +18,7 @@ extern "C" {
 #include	"i3c.h"
 #include	"demo.h"
 #include	"mcu.h"
+#include	"io.h"
 
 void	DAA_set_dynamic_ddress_from_static_ddress( uint8_t dynamic_address, uint8_t static_address );
 
@@ -28,6 +29,9 @@ __attribute__((constructor)) void start_mcu() {
 
 I3C		i3c;
 P3T1755	p3t1755( i3c );
+
+DigitalOut	red( D5 );
+DigitalOut	green( D6 );
 
 extern	I3C	i3c;
 

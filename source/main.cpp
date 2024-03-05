@@ -16,17 +16,17 @@ r01lib_start;	/* *** place this word before making instance of r01lib classes **
 I3C			i3c;
 P3T1755		p3t1755( i3c );
 
-DigitalOut	red(     RED   );
-DigitalOut	green(   GREEN );
-DigitalOut	blue(    BLUE  );
-DigitalOut	trigger( D2    );
+DigitalOut	r(    RED   );	//	== D5 pin
+DigitalOut	g(    GREEN );	//	== D6 pin
+DigitalOut	b(    BLUE  );	//	"BLUE" (D3) is a dummy LED difinition. This pin is overriden by PWM output
+DigitalOut	trig( D2    );	//	IBI detection trigger. Pin D0~D2, D4~D13, D18, D19 and A0~A5 can be used
 
 void	DAA_set_dynamic_ddress_from_static_ddress( uint8_t dynamic_address, uint8_t static_address );
 
 int main(void)
 {
-	init_led();
-	i3c.set_IBI_callback( trigger_output );
+	init_pin_control();
+	i3c.set_IBI_callback( ibi_trigger_output );
 
 	PRINTF("\r\nP3T1755 (Temperature sensor) I3C operation sample: getting temperature data and IBI\r\n");
 

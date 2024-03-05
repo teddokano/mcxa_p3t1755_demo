@@ -15,18 +15,29 @@ extern "C" {
 #include	"pwm.h"
 }
 
-extern	DigitalOut	red;
-extern	DigitalOut	green;
-extern	DigitalOut	blue;
-extern	DigitalOut	trigger;
+extern	DigitalOut	r;
+extern	DigitalOut	g;
+extern	DigitalOut	b;
+extern	DigitalOut	trig;
 DigitalOut			*target_ptr;
 
-static void led_control_callback( void )
+void led_control_callback( void );
+
+void init_pin_control( void )
+{
+	target_ptr	= &b;
+	
+	pwm_start();
+	UTICK_SetTick( UTICK0, kUTICK_Repeat, 10000 - 1, led_control_callback );
+}
+
+
+void led_control_callback( void )
 {
 	static int	count	= 0;
 	int			c200;
 	
-	c200	= (&blue == target_ptr) ? count % 200 : 100;
+	c200	= (&b == target_ptr) ? count % 200 : 100;
 	pwm_update( (100 < c200) ? 200 - c200 : c200 );
 
 	led_pin_control( count );
@@ -34,31 +45,23 @@ static void led_control_callback( void )
 	count++;
 }
 
-void init_led( void )
-{
-	target_ptr	= &blue;
-	
-	pwm_start();
-	UTICK_SetTick( UTICK0, kUTICK_Repeat, 10000 - 1, led_control_callback );
-}
-
 void led_set_color( float temp, float ref )
 {
 	if ( (ref + 2) < temp )
-		target_ptr	= &red;
+		target_ptr	= &r;
 	else if ( (ref + 1) < temp )
-		target_ptr	= &green;
+		target_ptr	= &g;
 	else
-		target_ptr	= &blue;
+		target_ptr	= &b;
 	
-	trigger	= PIN_LED_OFF;
+	trig	= ~TRIGGER_PORALITY;
 }
 
 void led_all( bool v )
 {
-	red		= v;
-	green	= v;
-	blue	= v;
+	r		= v;
+	g	= v;
+	b	= v;
 }
 
 void led_pin_control( int v )
@@ -72,9 +75,7 @@ void led_pin_control( int v )
 		*target_ptr	= PIN_LED_ON;
 }
 
-void trigger_output( void )
+void ibi_trigger_output( void )
 {
-	trigger	= false;
+	trig	= TRIGGER_PORALITY;
 }
-
-

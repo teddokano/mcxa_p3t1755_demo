@@ -6,4 +6,6 @@
  */
 
 #define	LOWER_SCL_FREQ
-#define	IBI_TRIGGER_OUTPUT	A2
+#define	IBI_TRIGGER_OUTPUT	D2
+#define	TRIGGER_PORALITY	0
+

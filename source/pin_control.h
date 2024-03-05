@@ -5,11 +5,8 @@
  *
  */
 
-void	init_led( void );
-
+void	init_pin_control( void );
 void	led_set_color( float temp, float ref );
 void	led_all( bool v );
 void	led_pin_control( int v );
-
-void	trigger_output( void );
-
+void	ibi_trigger_output( void );

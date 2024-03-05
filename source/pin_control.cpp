@@ -5,23 +5,21 @@
  *
  */
 
+#include	"r01lib.h"
+
+#include	"config.h"
+#include	"pin_control.h"
+
 extern "C" {
 #include	"fsl_utick.h"
 #include	"pwm.h"
 }
 
-#include	"config.h"
-#include	"mcu.h"
-#include	"io.h"
-#include	"pin_control.h"
-
-extern DigitalOut	red;
-extern DigitalOut	green;
-extern DigitalOut	blue;
-extern DigitalOut	trigger;
-DigitalOut	*target_ptr;
-
-void init_pins( void );
+extern	DigitalOut	red;
+extern	DigitalOut	green;
+extern	DigitalOut	blue;
+extern	DigitalOut	trigger;
+DigitalOut			*target_ptr;
 
 static void led_control_callback( void )
 {
@@ -36,8 +34,6 @@ static void led_control_callback( void )
 	count++;
 }
 
-
-//void init_led( void )
 void init_led( void )
 {
 	target_ptr	= &blue;

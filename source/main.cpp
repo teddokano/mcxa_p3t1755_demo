@@ -6,21 +6,12 @@
  *
  */
 
-extern "C" {
-#include	"fsl_debug_console.h"
-}
-
 #include	"r01lib.h"
 
 #include	"config.h"
 #include	"pin_control.h"
 
-void	DAA_set_dynamic_ddress_from_static_ddress( uint8_t dynamic_address, uint8_t static_address );
-
-__attribute__((constructor)) void start_mcu() {
-	init_mcu();
-	PRINTF("\r\n***  MCU initialized properly  ***\r\n");
-}
+r01lib_start;	/* *** place this word before making instance of r01lib classes *** */
 
 I3C			i3c;
 P3T1755		p3t1755( i3c );
@@ -29,6 +20,8 @@ DigitalOut	red(     RED   );
 DigitalOut	green(   GREEN );
 DigitalOut	blue(    BLUE  );
 DigitalOut	trigger( D2    );
+
+void	DAA_set_dynamic_ddress_from_static_ddress( uint8_t dynamic_address, uint8_t static_address );
 
 int main(void)
 {

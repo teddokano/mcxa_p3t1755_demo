@@ -27,23 +27,13 @@ __attribute__((constructor)) void start_mcu() {
 	PRINTF("\r\n***  MCU initialized properly  ***\r\n");
 }
 
-I3C		i3c;
-P3T1755	p3t1755( i3c );
+I3C			i3c;
+P3T1755		p3t1755( i3c );
 
-DigitalOut	red( D5 );
-DigitalOut	green( D6 );
-DigitalOut	blue( D3 );
-DigitalOut	trigger( D3 );
-//DigitalOut&	target	= blue;
-
-extern	I3C	i3c;
-
-
-void trigger_output( void )
-{
-	trigger	= false;
-}
-
+DigitalOut	red(     RED   );
+DigitalOut	green(   GREEN );
+DigitalOut	blue(    BLUE  );
+DigitalOut	trigger( D2    );
 
 int main(void)
 {

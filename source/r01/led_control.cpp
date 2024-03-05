@@ -76,3 +76,9 @@ void led_pin_control( int v )
 		*target_ptr	= PIN_LED_ON;
 }
 
+void trigger_output( void )
+{
+	trigger	= false;
+}
+
+

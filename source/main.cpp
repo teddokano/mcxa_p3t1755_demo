@@ -18,7 +18,7 @@ extern "C" {
 #include	"i3c.h"
 #include	"mcu.h"
 #include	"io.h"
-#include	"led_control.h"
+#include	"pin_control.h"
 
 void	DAA_set_dynamic_ddress_from_static_ddress( uint8_t dynamic_address, uint8_t static_address );
 

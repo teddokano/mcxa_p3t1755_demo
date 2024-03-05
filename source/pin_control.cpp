@@ -13,7 +13,7 @@ extern "C" {
 #include	"config.h"
 #include	"mcu.h"
 #include	"io.h"
-#include	"led_control.h"
+#include	"pin_control.h"
 
 extern DigitalOut	red;
 extern DigitalOut	green;

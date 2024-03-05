@@ -47,17 +47,6 @@ void trigger_output( void )
 
 int main(void)
 {
-#if 0	//	DigitalOut LED blinking test
-	red	= 0;
-	green	= 1;
-	while ( 1 )
-	{
-		red		= !red;
-		green	= !green;
-		wait( 1 );
-	}
-#endif
-
 	init_led();
 	i3c.set_IBI_callback( trigger_output );
 

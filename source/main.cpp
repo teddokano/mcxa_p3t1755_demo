@@ -16,9 +16,9 @@ extern "C" {
 #include	"config.h"
 #include	"P3T1755.h"
 #include	"i3c.h"
-#include	"demo.h"
 #include	"mcu.h"
 #include	"io.h"
+#include	"led_control.h"
 
 void	DAA_set_dynamic_ddress_from_static_ddress( uint8_t dynamic_address, uint8_t static_address );
 
@@ -38,9 +38,16 @@ DigitalOut	trigger( D3 );
 
 extern	I3C	i3c;
 
+
+void trigger_output( void )
+{
+	trigger	= false;
+}
+
+
 int main(void)
 {
-#if 1	//	DigitalOut LED blinking test
+#if 0	//	DigitalOut LED blinking test
 	red	= 0;
 	green	= 1;
 	while ( 1 )
@@ -51,7 +58,8 @@ int main(void)
 	}
 #endif
 
-	init_demo();
+	init_led();
+	i3c.set_IBI_callback( trigger_output );
 
 	PRINTF("\r\nP3T1755 (Temperature sensor) I3C operation sample: getting temperature data and IBI\r\n");
 
@@ -84,7 +92,7 @@ int main(void)
 		temp	= p3t1755;
 		PRINTF( "Temperature: %8.4f˚C\r\n", temp );
 
-		demo( temp, &ref_temp );
+		led_set_color( temp, ref_temp );
 		wait( 1 );
 	}
 }

@@ -81,8 +81,3 @@ void led_pin_control( int v )
 		trigger	= true;
 }
 
-
-void trigger_output( void )
-{
-	trigger	= false;
-}

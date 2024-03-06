@@ -38,6 +38,7 @@ pin_labels:
 - {pin_num: '6', pin_signal: P1_12/WUU0_IN12/LPUART2_RXD/CT2_MAT2/ADC0_A10, label: ARD_A1, identifier: ARD_A1}
 - {pin_num: '7', pin_signal: P1_13/TRIG_IN3/LPUART2_TXD/CT2_MAT3/ADC0_A11, label: ARD_A2, identifier: ARD_A2}
 - {pin_num: '14', pin_signal: P2_0/WUU0_IN18/TRIG_IN6/LPUART0_RXD/CT_INP16/CT2_MAT0/ADC0_A0, label: ARD_A3, identifier: ARD_A3}
+- {pin_num: '54', pin_signal: P0_16/WUU0_IN2/LPI2C0_SDA/LPSPI0_PCS2/CT0_MAT0/UTICK_CAP2/I3C0_SDA, label: I3C_SDA}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -67,19 +68,13 @@ BOARD_InitPins:
     drive_strength: low, pull_select: up, pull_enable: enable, input_buffer: enable, invert_input: normal}
   - {pin_num: '51', peripheral: LPUART0, signal: RX, pin_signal: P0_2/TDO/SWO/LPUART0_RXD/LPSPI0_SCK/CT0_MAT0/UTICK_CAP0/I3C0_PUR, slew_rate: fast, open_drain: disable,
     drive_strength: low, pull_select: up, pull_enable: enable, input_buffer: enable, invert_input: normal}
-  - {pin_num: '55', peripheral: I3C0, signal: SCL, pin_signal: P0_17/LPI2C0_SCL/LPSPI0_PCS3/CT0_MAT1/UTICK_CAP3/I3C0_SCL, slew_rate: fast, open_drain: disable, drive_strength: low,
-    pull_select: down, pull_enable: disable, passive_filter: disable, input_buffer: enable, invert_input: normal}
-  - {pin_num: '54', peripheral: I3C0, signal: SDA, pin_signal: P0_16/WUU0_IN2/LPI2C0_SDA/LPSPI0_PCS2/CT0_MAT0/UTICK_CAP2/I3C0_SDA, slew_rate: fast, open_drain: disable,
-    drive_strength: low, pull_select: down, pull_enable: disable, passive_filter: disable, pull_value: low, input_buffer: enable, invert_input: normal}
   - {pin_num: '5', peripheral: I3C0, signal: PUR, pin_signal: P1_11/WUU0_IN11/TRIG_OUT2/LPUART1_CTS_B/LPI2C0_SCLS/CT2_MAT1/I3C0_PUR/ADC0_A9, slew_rate: fast, open_drain: disable,
     drive_strength: low, pull_select: down, pull_enable: disable, input_buffer: enable, invert_input: normal}
   - {pin_num: '38', peripheral: GPIO3, signal: 'GPIO, 12', pin_signal: P3_12/LPUART2_RTS_B/CT1_MAT2/PWM0_X0}
   - {pin_num: '37', peripheral: GPIO3, signal: 'GPIO, 13', pin_signal: P3_13/LPUART2_CTS_B/CT1_MAT3/PWM0_X1}
   - {pin_num: '53', peripheral: GPIO0, signal: 'GPIO, 6', pin_signal: P0_6/LPI2C0_HREQ/LPSPI0_PCS1/CT_INP2/CMP1_OUT/CLKOUT/ADC0_A15}
-  - {pin_num: '2', peripheral: GPIO1, signal: 'GPIO, 8', pin_signal: P1_8/WUU0_IN10/LPUART1_RXD/LPI2C0_SDA/CT_INP8/CT0_MAT2/I3C0_SDA}
   - {pin_num: '30', peripheral: GPIO3, signal: 'GPIO, 31', pin_signal: P3_31/LPTMR0_ALT2/TRIG_IN10/CT0_MAT3/ADC0_A12}
   - {pin_num: '31', peripheral: GPIO3, signal: 'GPIO, 30', pin_signal: P3_30/TRIG_OUT6/CT0_MAT2/ADC0_A13}
-  - {pin_num: '3', peripheral: GPIO1, signal: 'GPIO, 9', pin_signal: P1_9/LPUART1_TXD/LPI2C0_SCL/CT_INP9/CT0_MAT3/I3C0_SCL}
   - {pin_num: '6', peripheral: GPIO1, signal: 'GPIO, 12', pin_signal: P1_12/WUU0_IN12/LPUART2_RXD/CT2_MAT2/ADC0_A10}
   - {pin_num: '7', peripheral: GPIO1, signal: 'GPIO, 13', pin_signal: P1_13/TRIG_IN3/LPUART2_TXD/CT2_MAT3/ADC0_A11}
   - {pin_num: '14', peripheral: GPIO2, signal: 'GPIO, 0', pin_signal: P2_0/WUU0_IN18/TRIG_IN6/LPUART0_RXD/CT_INP16/CT2_MAT0/ADC0_A0}
@@ -99,6 +94,10 @@ BOARD_InitPins:
   - {pin_num: '40', peripheral: FlexPWM0, signal: 'A, 2', pin_signal: P3_10/TRIG_IN5/LPSPI1_SCK/LPUART1_RTS_B/CT1_MAT0/PWM0_A2}
   - {pin_num: '46', peripheral: FlexPWM0, signal: 'A, 0', pin_signal: P3_0/WUU0_IN22/TRIG_IN0/CT_INP16/PWM0_A0}
   - {pin_num: '4', peripheral: GPIO1, signal: 'GPIO, 10', pin_signal: P1_10/LPUART1_RTS_B/LPI2C0_SDAS/CT2_MAT0/ADC0_A8}
+  - {pin_num: '2', peripheral: GPIO1, signal: 'GPIO, 8', pin_signal: P1_8/WUU0_IN10/LPUART1_RXD/LPI2C0_SDA/CT_INP8/CT0_MAT2/I3C0_SDA}
+  - {pin_num: '3', peripheral: GPIO1, signal: 'GPIO, 9', pin_signal: P1_9/LPUART1_TXD/LPI2C0_SCL/CT_INP9/CT0_MAT3/I3C0_SCL}
+  - {pin_num: '55', peripheral: I3C0, signal: SCL, pin_signal: P0_17/LPI2C0_SCL/LPSPI0_PCS3/CT0_MAT1/UTICK_CAP3/I3C0_SCL}
+  - {pin_num: '54', peripheral: I3C0, signal: SDA, pin_signal: P0_16/WUU0_IN2/LPI2C0_SDA/LPSPI0_PCS2/CT0_MAT0/UTICK_CAP2/I3C0_SDA}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -145,69 +144,22 @@ void BOARD_InitPins(void)
     /* PORT0_16 (pin 54) is configured as I3C0_SDA */
     PORT_SetPinMux(PORT0, 16U, kPORT_MuxAlt10);
 
-    PORT0->PCR[16] =
-        ((PORT0->PCR[16] &
-          /* Mask bits to zero which are setting */
-          (~(PORT_PCR_PS_MASK | PORT_PCR_PE_MASK | PORT_PCR_PV_MASK | PORT_PCR_SRE_MASK | PORT_PCR_PFE_MASK | PORT_PCR_ODE_MASK | PORT_PCR_DSE_MASK | PORT_PCR_IBE_MASK | PORT_PCR_INV_MASK)))
+    PORT0->PCR[16] = ((PORT0->PCR[16] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_IBE_MASK)))
 
-         /* Pull Select: Enables internal pulldown resistor. */
-         | PORT_PCR_PS(PCR_PS_ps0)
-
-         /* Pull Enable: Disables. */
-         | PORT_PCR_PE(PCR_PE_pe0)
-
-         /* Pull Value: Low. */
-         | PORT_PCR_PV(PCR_PV_pv0)
-
-         /* Slew Rate Enable: Fast. */
-         | PORT_PCR_SRE(PCR_SRE_sre0)
-
-         /* Passive Filter Enable: Disables. */
-         | PORT_PCR_PFE(PCR_PFE_pfe0)
-
-         /* Open Drain Enable: Disables. */
-         | PORT_PCR_ODE(PCR_ODE_ode0)
-
-         /* Drive Strength Enable: Low. */
-         | PORT_PCR_DSE(PCR_DSE_dse0)
-
-         /* Input Buffer Enable: Enables. */
-         | PORT_PCR_IBE(PCR_IBE_ibe1)
-
-         /* Invert Input: Does not invert. */
-         | PORT_PCR_INV(PCR_INV_inv0));
+                      /* Input Buffer Enable: Enables. */
+                      | PORT_PCR_IBE(PCR_IBE_ibe1));
 
     /* PORT0_17 (pin 55) is configured as I3C0_SCL */
     PORT_SetPinMux(PORT0, 17U, kPORT_MuxAlt10);
 
-    PORT0->PCR[17] =
-        ((PORT0->PCR[17] &
-          /* Mask bits to zero which are setting */
-          (~(PORT_PCR_PS_MASK | PORT_PCR_PE_MASK | PORT_PCR_SRE_MASK | PORT_PCR_PFE_MASK | PORT_PCR_ODE_MASK | PORT_PCR_DSE_MASK | PORT_PCR_IBE_MASK | PORT_PCR_INV_MASK)))
+    PORT0->PCR[17] = ((PORT0->PCR[17] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_IBE_MASK)))
 
-         /* Pull Select: Enables internal pulldown resistor. */
-         | PORT_PCR_PS(PCR_PS_ps0)
-
-         /* Pull Enable: Disables. */
-         | PORT_PCR_PE(PCR_PE_pe0)
-
-         /* Slew Rate Enable: Fast. */
-         | PORT_PCR_SRE(PCR_SRE_sre0)
-
-         /* Passive Filter Enable: Disables. */
-         | PORT_PCR_PFE(PCR_PFE_pfe0)
-
-         /* Open Drain Enable: Disables. */
-         | PORT_PCR_ODE(PCR_ODE_ode0)
-
-         /* Drive Strength Enable: Low. */
-         | PORT_PCR_DSE(PCR_DSE_dse0)
-
-         /* Input Buffer Enable: Enables. */
-         | PORT_PCR_IBE(PCR_IBE_ibe1)
-
-         /* Invert Input: Does not invert. */
-         | PORT_PCR_INV(PCR_INV_inv0));
+                      /* Input Buffer Enable: Enables. */
+                      | PORT_PCR_IBE(PCR_IBE_ibe1));
 
     const port_pin_config_t port0_2_pin51_config = {/* Internal pull-up resistor is enabled */
                                                     kPORT_PullUp,

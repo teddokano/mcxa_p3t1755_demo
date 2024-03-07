@@ -72,17 +72,30 @@ status_t I3C::reg_write( uint8_t targ, uint8_t reg, const uint8_t *dp, int lengt
 	bp[ 0 ]	= reg;
 	memcpy( (uint8_t *)bp + 1, (uint8_t *)dp, length );
 
-	return write( targ, bp, length + 1 );
+	last_status	= write( targ, bp, length + 1 );
+	
+	return last_status;
+}
+
+status_t I3C::reg_write( uint8_t targ, uint8_t reg, uint8_t data )
+{
+	return write( targ, &data, 1 );
 }
 
 status_t I3C::reg_read( uint8_t targ, uint8_t reg, uint8_t *dp, int length )
 {
-	status_t r	= write( targ, &reg, 1, false );
+	last_status	= write( targ, &reg, 1, NO_STOP );
 	
-	if ( kStatus_Success != r )
-		return r;
+	if ( kStatus_Success != last_status )
+		return last_status;
 	
 	return read( targ, dp, length );
+}
+
+uint8_t I3C::reg_read( uint8_t targ, uint8_t reg )
+{
+	last_status	= write( targ, reg, NO_STOP );
+	return read( targ );
 }
 
 status_t I3C::write( uint8_t targ, const uint8_t *dp, int length, bool stop )
@@ -90,9 +103,23 @@ status_t I3C::write( uint8_t targ, const uint8_t *dp, int length, bool stop )
 	return xfer( kI3C_Write, kI3C_TypeI3CSdr, targ, (uint8_t *)dp, length, stop );
 }
 
+status_t I3C::write( uint8_t targ, uint8_t data, bool stop )
+{
+	return write( targ, &data, 1 );
+}
+
 status_t I3C::read( uint8_t targ, uint8_t *dp, int length, bool stop )
 {
 	return xfer( kI3C_Read, kI3C_TypeI3CSdr, targ, dp, length, stop );
+}
+
+uint8_t I3C::read( uint8_t targ, bool stop )
+{
+	uint8_t	data;
+
+	last_status	= read( targ, &data, 1 );
+
+	return data;
 }
 
 status_t I3C::xfer( i3c_direction_t dir, i3c_bus_type_t type, uint8_t targ, uint8_t *dp, int length, bool stop )
@@ -127,7 +154,7 @@ status_t I3C::ccc_broadcast( uint8_t ccc, const uint8_t *dp, uint8_t length )
 
 status_t I3C::ccc_set( uint8_t ccc, uint8_t addr, uint8_t data )
 {
-	status_t r	= write( I3C_BROADCAST_ADDR, &ccc, 1, false );
+	status_t r	= write( I3C_BROADCAST_ADDR, &ccc, 1, NO_STOP );
 
 	if ( kStatus_Success != r )
 		return r;
@@ -137,7 +164,7 @@ status_t I3C::ccc_set( uint8_t ccc, uint8_t addr, uint8_t data )
 
 status_t I3C::ccc_get( uint8_t ccc, uint8_t addr, uint8_t *dp, uint8_t length )
 {
-	status_t r	= write( I3C_BROADCAST_ADDR, &ccc, 1, false );
+	status_t r	= write( I3C_BROADCAST_ADDR, &ccc, 1, NO_STOP );
 
 	if ( kStatus_Success != r )
 		return r;

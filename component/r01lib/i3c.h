@@ -56,10 +56,7 @@ public:
 	~I3C();
 	
 	status_t	reg_write( uint8_t targ, uint8_t reg, const uint8_t *dp, int length );
-	status_t	reg_write( uint8_t targ, uint8_t reg, uint8_t data );
-	
 	status_t	reg_read( uint8_t targ, uint8_t reg, uint8_t *dp, int length );
-	uint8_t		reg_read( uint8_t targ, uint8_t reg );
 	
 	status_t	write( uint8_t targ, const uint8_t *dp, int length, bool stop = STOP );
 	status_t	write( uint8_t targ, uint8_t data, bool stop = STOP );

@@ -79,12 +79,12 @@ status_t I3C::reg_write( uint8_t targ, uint8_t reg, const uint8_t *dp, int lengt
 
 status_t I3C::reg_write( uint8_t targ, uint8_t reg, uint8_t data )
 {
-	return write( targ, &data, 1 );
+	return write( targ, &data, sizeof( data ) );
 }
 
 status_t I3C::reg_read( uint8_t targ, uint8_t reg, uint8_t *dp, int length )
 {
-	last_status	= write( targ, &reg, 1, NO_STOP );
+	last_status	= write( targ, &reg, sizeof( reg ), NO_STOP );
 	
 	if ( kStatus_Success != last_status )
 		return last_status;
@@ -105,7 +105,7 @@ status_t I3C::write( uint8_t targ, const uint8_t *dp, int length, bool stop )
 
 status_t I3C::write( uint8_t targ, uint8_t data, bool stop )
 {
-	return write( targ, &data, 1 );
+	return write( targ, &data, sizeof( data ), stop );
 }
 
 status_t I3C::read( uint8_t targ, uint8_t *dp, int length, bool stop )
@@ -117,7 +117,7 @@ uint8_t I3C::read( uint8_t targ, bool stop )
 {
 	uint8_t	data;
 
-	last_status	= read( targ, &data, 1 );
+	last_status	= read( targ, &data, sizeof( data ), stop );
 
 	return data;
 }

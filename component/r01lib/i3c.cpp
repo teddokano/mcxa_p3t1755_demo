@@ -72,7 +72,7 @@ status_t I3C::reg_write( uint8_t targ, uint8_t reg, const uint8_t *dp, int lengt
 	bp[ 0 ]	= reg;
 	memcpy( (uint8_t *)bp + 1, (uint8_t *)dp, length );
 
-	return write( targ, bp, length + 1, true );
+	return write( targ, bp, length + 1 );
 }
 
 status_t I3C::reg_read( uint8_t targ, uint8_t reg, uint8_t *dp, int length )
@@ -82,7 +82,7 @@ status_t I3C::reg_read( uint8_t targ, uint8_t reg, uint8_t *dp, int length )
 	if ( kStatus_Success != r )
 		return r;
 	
-	return read( targ, dp, length, true );
+	return read( targ, dp, length );
 }
 
 status_t I3C::write( uint8_t targ, const uint8_t *dp, int length, bool stop )
@@ -122,7 +122,7 @@ status_t I3C::ccc_broadcast( uint8_t ccc, const uint8_t *dp, uint8_t length )
 	bp[ 0 ]	= ccc;
 	memcpy( (uint8_t *)bp + 1, (uint8_t *)dp, length );
 	
-	return write( I3C_BROADCAST_ADDR, bp, length + 1, true );
+	return write( I3C_BROADCAST_ADDR, bp, length + 1 );
 }
 
 status_t I3C::ccc_set( uint8_t ccc, uint8_t addr, uint8_t data )
@@ -132,7 +132,7 @@ status_t I3C::ccc_set( uint8_t ccc, uint8_t addr, uint8_t data )
 	if ( kStatus_Success != r )
 		return r;
 	
-	return write( addr, &data, 1, true  );
+	return write( addr, &data, 1 );
 }
 
 status_t I3C::ccc_get( uint8_t ccc, uint8_t addr, uint8_t *dp, uint8_t length )
@@ -142,7 +142,7 @@ status_t I3C::ccc_get( uint8_t ccc, uint8_t addr, uint8_t *dp, uint8_t length )
 	if ( kStatus_Success != r )
 		return r;
 	
-	return read( addr, dp, length, true );
+	return read( addr, dp, length );
 }
 
 uint8_t I3C::check_IBI( void )

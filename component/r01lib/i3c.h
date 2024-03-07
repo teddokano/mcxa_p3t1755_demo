@@ -29,6 +29,10 @@
 
 #define I2C_FREQ		400000UL
 
+#define	STOP			true
+#define	NO_STOP			false
+
+
 enum CCC
 {
 	BROADCAST_ENEC		= 0x00,
@@ -54,9 +58,9 @@ public:
 	
 	status_t	reg_write( uint8_t targ, uint8_t reg, const uint8_t *dp, int length );
 	status_t	reg_read( uint8_t targ, uint8_t reg, uint8_t *dp, int length );
-	status_t	write( uint8_t targ, const uint8_t *dp, int length, bool stop );
-	status_t	read( uint8_t targ, uint8_t *dp, int length, bool stop );
-	status_t	xfer( i3c_direction_t dir, i3c_bus_type_t type, uint8_t targ, uint8_t *dp, int length, bool stop );
+	status_t	write( uint8_t targ, const uint8_t *dp, int length, bool stop = STOP );
+	status_t	read( uint8_t targ, uint8_t *dp, int length, bool stop = STOP );
+	status_t	xfer( i3c_direction_t dir, i3c_bus_type_t type, uint8_t targ, uint8_t *dp, int length, bool stop = STOP );
 	uint8_t		check_IBI( void );
 	void		set_IBI_callback( i3c_func_ptr fp );
 

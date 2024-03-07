@@ -25,6 +25,38 @@ void	DAA_set_dynamic_ddress_from_static_ddress( uint8_t static_address, uint8_t 
 
 int main(void)
 {
+	unsigned char	rst_daa[]	= { 0x06 };
+	unsigned char	set_data[]	= { 0x87 };
+	unsigned char	set_data_new_addr[]	= { 0x10 };
+
+	unsigned char	data_w[]	= { 0x00 };
+	unsigned char	data_r[ 2 ];
+
+#if 0
+i3c.ccc_broadcast( CCC::BROADCAST_RSTDAA, NULL, 0 ); // Reset DAA
+i3c.ccc_set( CCC::DIRECT_SETDASA, 0x48, 0x08 << 1 ); // Set Dynamic Address from Static Address
+#else
+    i3c.write( 0x7E, rst_daa, 1 );
+    i3c.write( 0x7E, set_data, 1, false );
+    i3c.write( 0x48, set_data_new_addr, 1 );
+#endif
+
+
+    while ( 1 )
+    {
+    	// write zero to address 0x48 without STOP
+    	i3c.write( 0x08, data_w, 1, false );
+
+    	// read 2 bytes from address 0x48 with STOP
+    	i3c.read(  0x08, data_r, 2  );
+
+    	PRINTF( "received = 0x %02X %02X\r\n", data_r[ 0 ], data_r[ 1 ] );
+    }
+}
+
+
+int main2(void)
+{
 	init_pin_control();
 	i3c.set_IBI_callback( ibi_trigger_output );
 

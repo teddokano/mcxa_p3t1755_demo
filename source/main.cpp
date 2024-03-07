@@ -36,9 +36,9 @@ int main(void)
 i3c.ccc_broadcast( CCC::BROADCAST_RSTDAA, NULL, 0 ); // Reset DAA
 i3c.ccc_set( CCC::DIRECT_SETDASA, 0x48, 0x08 << 1 ); // Set Dynamic Address from Static Address
 #else
-    i3c.write( 0x7E, rst_daa, 1 );
-    i3c.write( 0x7E, set_data, 1, false );
-    i3c.write( 0x48, set_data_new_addr, 1 );
+    i3c.write( 0x7E, 0x06 );
+    i3c.write( 0x7E, 0x87, NO_STOP );
+    i3c.write( 0x48, 0x08 << 1 );
 #endif
 
 

@@ -10,6 +10,8 @@
  */
 
 
+#include "r01lib.h"
+
 extern "C" {
 #include	<string.h>
 #include	"fsl_i3c.h"
@@ -27,8 +29,15 @@ extern "C" {
 #define	REG_RW_BUFFER_SIZE			10
 #define	IBI_PAYLOAD_BUFFER_SIZE		10
 
+
+#ifdef	CPU_MCXN947VDF
+#define EXAMPLE_MASTER            	I3C1
+#define I3C_MASTER_CLOCK_FREQUENCY	CLOCK_GetI3cClkFreq(1)
+#else
 #define EXAMPLE_MASTER				I3C0
 #define I3C_MASTER_CLOCK_FREQUENCY	CLOCK_GetI3CFClkFreq()
+#endif
+
 
 uint8_t					g_ibiBuff[ IBI_PAYLOAD_BUFFER_SIZE ];
 static uint8_t			g_ibiUserBuff[ IBI_PAYLOAD_BUFFER_SIZE ];

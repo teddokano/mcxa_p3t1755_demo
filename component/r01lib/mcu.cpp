@@ -6,6 +6,7 @@
  */
 
 extern "C" {
+#include "peripherals.h"
 #include "fsl_common.h"
 #include "fsl_debug_console.h"
 #include "fsl_i3c.h"
@@ -22,6 +23,31 @@ extern "C" {
 
 void init_mcu( void )
 {
+#ifdef	CPU_MCXN947VDF
+	CLOCK_SetClkDiv(kCLOCK_DivFlexcom4Clk, 1);
+	CLOCK_AttachClk(BOARD_DEBUG_UART_CLK_ATTACH);
+
+	/* Attach PLL0 clock to I3C, 150MHz / 6 = 25MHz. */
+	CLOCK_SetClkDiv(kCLOCK_DivI3c1FClk, 6U);
+	CLOCK_AttachClk(kPLL0_to_I3C1FCLK);
+
+	SYSCON->CLOCK_CTRL |= SYSCON_CLOCK_CTRL_FRO1MHZ_ENA_MASK;	//	UTICK
+
+	CLOCK_EnableClock( kCLOCK_Gpio0 );
+	CLOCK_EnableClock( kCLOCK_Gpio1 );
+	CLOCK_EnableClock( kCLOCK_Gpio3 );
+	CLOCK_EnableClock( kCLOCK_Gpio4 );
+
+	/* Init board hardware. */
+	BOARD_InitBootPins();
+	BOARD_InitBootClocks();
+	BOARD_InitBootPeripherals();
+#ifndef BOARD_INIT_DEBUG_CONSOLE_PERIPHERAL
+	/* Init FSL debug console. */
+	BOARD_InitDebugConsole();
+#endif
+
+#else
 	/* Attach clock to I3C 24MHZ */
 	CLOCK_SetClockDiv( kCLOCK_DivI3C0_FCLK, 2U );
 	CLOCK_AttachClk( kFRO_HF_DIV_to_I3C0FCLK );
@@ -31,10 +57,11 @@ void init_mcu( void )
 	CLOCK_EnableClock( kCLOCK_GateGPIO2 );
 
 	RESET_PeripheralReset( kUTICK0_RST_SHIFT_RSTn );
-
+	
 	BOARD_InitPins();
 	BOARD_InitBootClocks();
 	BOARD_InitDebugConsole();
+#endif
 
 	UTICK_Init( UTICK0 );
 }

@@ -6,8 +6,7 @@ extern "C" {
 }
 
 I3C_Device::I3C_Device( I3C &i3c, uint8_t address ) : _i3c( i3c ), _addr( address )
-{
-	
+{	
 }
 
 I3C_Device::~I3C_Device(){}

@@ -14,6 +14,8 @@
 r01lib_start;	/* *** place this word before making instance of r01lib classes *** */
 
 I3C			i3c;
+I2C			i2c;
+
 P3T1755		p3t1755( i3c );
 
 DigitalOut	r(    RED   );	//	== D5 pin
@@ -25,6 +27,12 @@ void	DAA_set_dynamic_ddress_from_static_ddress( uint8_t static_address, uint8_t 
 
 int main(void)
 {
+	while ( true )
+	{
+		uint8_t	data[]	= { 0x00, 0x01, 0x02, 0x03 };
+		i2c.write( 0xAA, data, sizeof( data ) );
+	}
+
 	init_pin_control();
 	i3c.set_IBI_callback( ibi_trigger_output );
 

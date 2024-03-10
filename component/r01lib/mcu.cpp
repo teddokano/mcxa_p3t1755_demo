@@ -31,6 +31,10 @@ void init_mcu( void )
 	CLOCK_SetClkDiv(kCLOCK_DivI3c1FClk, 6U);
 	CLOCK_AttachClk(kPLL0_to_I3C1FCLK);
 
+	/* Attach peripheral clock */
+	CLOCK_SetClockDiv(kCLOCK_DivLPI2C0, 1u);
+	CLOCK_AttachClk(kFRO12M_to_LPI2C0);
+
 	SYSCON->CLOCK_CTRL |= SYSCON_CLOCK_CTRL_FRO1MHZ_ENA_MASK;	//	UTICK
 
 	CLOCK_EnableClock( kCLOCK_Gpio0 );

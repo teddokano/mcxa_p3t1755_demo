@@ -45,13 +45,6 @@ status_t I2C::write( uint8_t address, const uint8_t *dp, int length, bool stop )
 
 	if ( (r = LPI2C_MasterStart( EXAMPLE_I2C_MASTER, address, kLPI2C_Write )) )
 		return r;
-#if 0
-	
-	do {
-		LPI2C_MasterGetFifoCounts( EXAMPLE_I2C_MASTER, NULL, &txCount );
-	} while ( txCount );
-
-#else
 
 	LPI2C_MasterGetFifoCounts(EXAMPLE_I2C_MASTER, NULL, &txCount);
 	while (txCount)
@@ -59,8 +52,6 @@ status_t I2C::write( uint8_t address, const uint8_t *dp, int length, bool stop )
 		LPI2C_MasterGetFifoCounts(EXAMPLE_I2C_MASTER, NULL, &txCount);
 	}
 
-#endif	
-	
 	if ( LPI2C_MasterGetStatusFlags( EXAMPLE_I2C_MASTER ) & kLPI2C_MasterNackDetectFlag )
 		return kStatus_LPI2C_Nak;
 
@@ -101,4 +92,56 @@ status_t I2C::read( uint8_t address, uint8_t *dp, int length, bool stop )
 		return LPI2C_MasterStop( EXAMPLE_I2C_MASTER );
 
 	return kStatus_Success;
+}
+
+
+
+
+
+
+status_t I2C::reg_write( uint8_t targ, uint8_t reg, const uint8_t *dp, int length )
+{
+	uint8_t	bp[ REG_RW_BUFFER_SIZE ];
+	
+	bp[ 0 ]	= reg;
+	memcpy( (uint8_t *)bp + 1, (uint8_t *)dp, length );
+
+	last_status	= write( targ, bp, length + 1 );
+	
+	return last_status;
+}
+
+status_t I2C::reg_write( uint8_t targ, uint8_t reg, uint8_t data )
+{
+	return write( targ, &data, sizeof( data ) );
+}
+
+status_t I2C::reg_read( uint8_t targ, uint8_t reg, uint8_t *dp, int length )
+{
+	last_status	= write( targ, &reg, sizeof( reg ), NO_STOP );
+	
+	if ( kStatus_Success != last_status )
+		return last_status;
+	
+	return read( targ, dp, length );
+}
+
+uint8_t I2C::reg_read( uint8_t targ, uint8_t reg )
+{
+	last_status	= write( targ, reg, NO_STOP );
+	return read( targ );
+}
+
+status_t I2C::write( uint8_t targ, uint8_t data, bool stop )
+{
+	return write( targ, &data, sizeof( data ), stop );
+}
+
+uint8_t I2C::read( uint8_t targ, bool stop )
+{
+	uint8_t	data;
+
+	last_status	= read( targ, &data, sizeof( data ), stop );
+
+	return data;
 }

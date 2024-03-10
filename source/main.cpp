@@ -26,6 +26,7 @@ void	DAA_set_dynamic_ddress_from_static_ddress( uint8_t static_address, uint8_t 
 
 int main(void)
 {
+#if 0
 	while ( true )
 	{
 		uint8_t	reg	= 0x00;
@@ -37,6 +38,7 @@ int main(void)
 
 		wait( 0.1 );
 	}
+#endif
 
 	init_pin_control();
 	i3c.set_IBI_callback( ibi_trigger_output );

@@ -10,6 +10,7 @@ extern "C" {
 #include "fsl_common.h"
 #include "fsl_debug_console.h"
 #include "fsl_i3c.h"
+#include "fsl_lpi2c.h"
 #include "pin_mux.h"
 #include "clock_config.h"
 #include "board.h"
@@ -55,6 +56,10 @@ void init_mcu( void )
 	/* Attach clock to I3C 24MHZ */
 	CLOCK_SetClockDiv( kCLOCK_DivI3C0_FCLK, 2U );
 	CLOCK_AttachClk( kFRO_HF_DIV_to_I3C0FCLK );
+
+	/* Attach peripheral clock */
+	CLOCK_SetClockDiv(kCLOCK_DivLPI2C0, 1u);
+	CLOCK_AttachClk(kFRO12M_to_LPI2C0);
 
 	CLOCK_EnableClock( kCLOCK_GateGPIO1 );
 	CLOCK_EnableClock( kCLOCK_GateGPIO3 );

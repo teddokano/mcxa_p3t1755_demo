@@ -8,14 +8,9 @@
 #ifndef R01LIB_I2C_H
 #define R01LIB_I2C_H
 
-
-#define EXAMPLE_I2C_MASTER_BASE			LPI2C0
-#define LPI2C_MASTER_CLOCK_FREQUENCY	CLOCK_GetLpi2cClkFreq()
-
-
-#define EXAMPLE_I2C_MASTER				((LPI2C_Type *)EXAMPLE_I2C_MASTER_BASE)
-
 #define LPI2C_BAUDRATE					100000U
+
+
 
 class I2C
 {

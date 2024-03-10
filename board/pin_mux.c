@@ -98,6 +98,8 @@ BOARD_InitPins:
   - {pin_num: '3', peripheral: GPIO1, signal: 'GPIO, 9', pin_signal: P1_9/LPUART1_TXD/LPI2C0_SCL/CT_INP9/CT0_MAT3/I3C0_SCL}
   - {pin_num: '55', peripheral: I3C0, signal: SCL, pin_signal: P0_17/LPI2C0_SCL/LPSPI0_PCS3/CT0_MAT1/UTICK_CAP3/I3C0_SCL}
   - {pin_num: '54', peripheral: I3C0, signal: SDA, pin_signal: P0_16/WUU0_IN2/LPI2C0_SDA/LPSPI0_PCS2/CT0_MAT0/UTICK_CAP2/I3C0_SDA}
+  - {pin_num: '33', peripheral: LPI2C0, signal: SDA, pin_signal: P3_28/WUU0_IN26/TRIG_IN11/LPI2C0_SDA/CT_INP12}
+  - {pin_num: '34', peripheral: LPI2C0, signal: SCL, pin_signal: P3_27/TRIG_OUT7/LPI2C0_SCL/CT_INP13}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -140,6 +142,8 @@ void BOARD_InitPins(void)
     RESET_ReleasePeripheralReset(kPORT3_RST_SHIFT_RSTn);
     /* GPIO3 peripheral is released from reset */
     RESET_ReleasePeripheralReset(kGPIO3_RST_SHIFT_RSTn);
+    /* LPI2C0 peripheral is released from reset */
+    RESET_ReleasePeripheralReset(kLPI2C0_RST_SHIFT_RSTn);
 
     /* PORT0_16 (pin 54) is configured as I3C0_SDA */
     PORT_SetPinMux(PORT0, 16U, kPORT_MuxAlt10);
@@ -452,6 +456,26 @@ void BOARD_InitPins(void)
     PORT3->PCR[15] = ((PORT3->PCR[15] &
                        /* Mask bits to zero which are setting */
                        (~(PORT_PCR_IBE_MASK)))
+
+                      /* Input Buffer Enable: Enables. */
+                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    PORT3->PCR[27] = ((PORT3->PCR[27] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_MUX_MASK | PORT_PCR_IBE_MASK)))
+
+                      /* Pin Multiplex Control: PORT3_27 (pin 34) is configured as LPI2C0_SCL. */
+                      | PORT_PCR_MUX(PORT3_PCR27_MUX_mux10)
+
+                      /* Input Buffer Enable: Enables. */
+                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    PORT3->PCR[28] = ((PORT3->PCR[28] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_MUX_MASK | PORT_PCR_IBE_MASK)))
+
+                      /* Pin Multiplex Control: PORT3_28 (pin 33) is configured as LPI2C0_SDA. */
+                      | PORT_PCR_MUX(PORT3_PCR28_MUX_mux10)
 
                       /* Input Buffer Enable: Enables. */
                       | PORT_PCR_IBE(PCR_IBE_ibe1));

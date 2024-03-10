@@ -20,6 +20,13 @@ extern "C" {
 
 #include	"i2c.h"
 
+#define EXAMPLE_I2C_MASTER_BASE			LPI2C0
+#define LPI2C_MASTER_CLOCK_FREQUENCY	CLOCK_GetLpi2cClkFreq()
+
+
+#define EXAMPLE_I2C_MASTER				((LPI2C_Type *)EXAMPLE_I2C_MASTER_BASE)
+
+
 I2C::I2C( uint32_t frequency )
 {
 	lpi2c_master_config_t	masterConfig;
@@ -38,11 +45,22 @@ status_t I2C::write( uint8_t address, const uint8_t *dp, int length )
 
 	if ( (r = LPI2C_MasterStart( EXAMPLE_I2C_MASTER, address, kLPI2C_Write )) )
 		return r;
-
+#if 0
+	
 	do {
 		LPI2C_MasterGetFifoCounts( EXAMPLE_I2C_MASTER, NULL, &txCount );
 	} while ( txCount );
 
+#else
+
+	LPI2C_MasterGetFifoCounts(EXAMPLE_I2C_MASTER, NULL, &txCount);
+	while (txCount)
+	{
+		LPI2C_MasterGetFifoCounts(EXAMPLE_I2C_MASTER, NULL, &txCount);
+	}
+
+#endif	
+	
 	if ( LPI2C_MasterGetStatusFlags( EXAMPLE_I2C_MASTER ) & kLPI2C_MasterNackDetectFlag )
 		return kStatus_LPI2C_Nak;
 

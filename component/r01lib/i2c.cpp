@@ -38,7 +38,7 @@ I2C::I2C( uint32_t frequency )
 
 I2C::~I2C() {}
 
-status_t I2C::write( uint8_t address, const uint8_t *dp, int length )
+status_t I2C::write( uint8_t address, const uint8_t *dp, int length, bool stop )
 {
 	status_t	r = kStatus_Fail;
 	size_t		txCount	= 0xFFU;
@@ -72,11 +72,14 @@ status_t I2C::write( uint8_t address, const uint8_t *dp, int length )
 		return r;
 	}
 
-	return LPI2C_MasterStop( EXAMPLE_I2C_MASTER );
+	if ( stop )
+		return LPI2C_MasterStop( EXAMPLE_I2C_MASTER );
+
+	return kStatus_Success;
 }
 
 
-status_t I2C::read( uint8_t address, uint8_t *dp, int length )
+status_t I2C::read( uint8_t address, uint8_t *dp, int length, bool stop )
 {
 	status_t	r = kStatus_Fail;
 	size_t		txCount	= 0xFFU;
@@ -94,5 +97,8 @@ status_t I2C::read( uint8_t address, uint8_t *dp, int length )
 	if ( (r	= LPI2C_MasterReceive( EXAMPLE_I2C_MASTER, dp, length )) )
 		return r;
 
-	return LPI2C_MasterStop( EXAMPLE_I2C_MASTER );
+	if ( stop )
+		return LPI2C_MasterStop( EXAMPLE_I2C_MASTER );
+
+	return kStatus_Success;
 }

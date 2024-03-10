@@ -10,6 +10,9 @@
 
 #define LPI2C_BAUDRATE					100000U
 
+#define	STOP			true
+#define	NO_STOP			false
+
 
 
 class I2C
@@ -18,8 +21,8 @@ public:
 	I2C( uint32_t frequency = LPI2C_BAUDRATE );
 	~I2C();
 	
-	status_t	write( uint8_t address, const uint8_t *dp, int length );
-	status_t	read( uint8_t address, uint8_t *dp, int length );
+	status_t	write( uint8_t address, const uint8_t *dp, int length, bool stop = STOP );
+	status_t	read( uint8_t address, uint8_t *dp, int length, bool stop = STOP );
 
 private:
 };

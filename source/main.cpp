@@ -14,7 +14,7 @@
 r01lib_start;	/* *** place this word before making instance of r01lib classes *** */
 
 I3C			i3c;
-
+I2C			i2c;
 P3T1755		p3t1755( i3c );
 
 DigitalOut	r(    RED   );	//	== D5 pin
@@ -26,12 +26,14 @@ void	DAA_set_dynamic_ddress_from_static_ddress( uint8_t static_address, uint8_t 
 
 int main(void)
 {
-	I2C			i2c;
-
 	while ( true )
 	{
-		uint8_t	data[]	= { 0x00, 0x01, 0x02, 0x03 };
-		i2c.write( 0x4C, data, sizeof( data ) );
+		uint8_t	reg	= 0x00;
+		int16_t	data;
+		i2c.write( 0x4C, &reg, sizeof( reg ), NO_STOP );
+		i2c.read( 0x4C, (uint8_t *)&data, sizeof( data ) );
+
+		PRINTF( "temp = %8.4f˚C\r\n", (float)(((data & 0xFF) << 8) | ((data >> 8) & 0xFF)) / 256.0 );
 
 		wait( 0.1 );
 	}

@@ -6,7 +6,7 @@
  *
  */
 
-#define		ENABLE_I3C
+//#define		ENABLE_I3C
 
 #include	"r01lib.h"
 
@@ -40,6 +40,7 @@ void cb( void )
 
 int main(void)
 {
+#if 0
 	Ticker	t;
 	t.attach( cb, 1 );
 
@@ -51,6 +52,7 @@ int main(void)
 			PRINTF( "###\r\n" );
 		}
 	}
+#endif
 
 #if 0
 	while ( true )

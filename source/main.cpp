@@ -41,6 +41,30 @@ void cb( void )
 int main(void)
 {
 #if 0
+	InterruptIn	in( D1 );
+	in.fall( NULL );
+
+	while ( true )
+	{
+		PRINTF( "%d\r\n", in & 0x01 );
+		wait( 0.1 );
+	}
+
+#endif
+
+
+#if 0
+	DigitalIn	in( D2 );
+
+	while ( true )
+	{
+		PRINTF( "%d\r\n", in & 0x01 );
+		wait( 0.1 );
+	}
+
+#endif
+
+#if 0
 	Ticker	t;
 	t.attach( cb, 1 );
 

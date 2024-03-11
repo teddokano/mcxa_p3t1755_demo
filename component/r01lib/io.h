@@ -195,8 +195,12 @@ public:
 	 */
 	operator	bool();
 
+protected:
+	uint8_t		_pn; 
+	GPIO_Type	*gpio_n;
+	uint8_t		gpio_pin; 
+	
 private:
-	uint8_t	_pn; 
 	bool 	_dir; 
 	bool 	_value;
 };

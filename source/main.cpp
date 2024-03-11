@@ -31,8 +31,27 @@ DigitalOut	trig( D2    );	//	IBI detection trigger. Pin D0~D2, D4~D13, D18, D19 
 
 void	DAA_set_dynamic_ddress_from_static_ddress( uint8_t static_address, uint8_t dynamic_address );
 
+volatile int	g_Flag	= false;
+
+void cb( void )
+{
+	g_Flag	= true;
+}
+
 int main(void)
 {
+	Ticker	t;
+	t.attach( cb, 1 );
+
+	while ( true )
+	{
+		if ( g_Flag )
+		{
+			g_Flag	= false;
+			PRINTF( "###\r\n" );
+		}
+	}
+
 #if 0
 	while ( true )
 	{

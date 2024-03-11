@@ -20,11 +20,17 @@ extern "C" {
 
 #include	"i2c.h"
 
+
+#ifdef	CPU_MCXN947VDF
+#define EXAMPLE_I2C_MASTER_BASE			(LPI2C2_BASE)
+#define LPI2C_MASTER_CLOCK_FREQUENCY 	CLOCK_GetLPFlexCommClkFreq(2u)
+#define EXAMPLE_I2C_MASTER				((LPI2C_Type *)EXAMPLE_I2C_MASTER_BASE)
+#else
 #define EXAMPLE_I2C_MASTER_BASE			LPI2C0
 #define LPI2C_MASTER_CLOCK_FREQUENCY	CLOCK_GetLpi2cClkFreq()
-
-
 #define EXAMPLE_I2C_MASTER				((LPI2C_Type *)EXAMPLE_I2C_MASTER_BASE)
+#endif
+
 
 
 I2C::I2C( uint32_t frequency )

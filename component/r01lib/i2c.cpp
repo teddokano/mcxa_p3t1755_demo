@@ -145,3 +145,15 @@ uint8_t I2C::read( uint8_t targ, bool stop )
 
 	return data;
 }
+
+
+status_t I2C::ccc_set( uint8_t ccc, uint8_t addr, uint8_t data )
+{
+	return kStatus_Success;
+}
+
+status_t I2C::ccc_get( uint8_t ccc, uint8_t addr, uint8_t *dp, uint8_t length )
+{
+	memset( dp, 0, length );
+	return kStatus_Success;
+}

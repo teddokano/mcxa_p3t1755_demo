@@ -1,5 +1,4 @@
 /*
- * Copyright 2017 NXP
  * Copyright 2024 Tedd OKANO
  * All rights reserved.
  *
@@ -22,11 +21,22 @@ extern "C" {
 #include	"io.h"
 #include	"InterruptIn.h"
 
+#ifdef	CPU_MCXN947VDF
+	#define		N_GPIO		6
+	#define		GPIO_BITS	32
+	static	GPIO_Type	*gpio_ptr[]	= GPIO_BASE_PTRS;
+	static	IRQn_Type	irqs[]		= GPIO_IRQS;
+#else // CPU_MCXN947VDF
+	#define		N_GPIO		4
+	#define		GPIO_BITS	32
+	static	GPIO_Type	*gpio_ptr[]	= GPIO_BASE_PTRS;
+	static	IRQn_Type	irqs[]		= GPIO_IRQS;
+#endif //CPU_MCXN947VDF
+
 void irq_handler( int num );
 
-static	GPIO_Type	*gpio_ptr[]	= GPIO_BASE_PTRS;
 
-utick_callback_t	cb_table[ 4 ][ 32 ]	= { NULL };
+utick_callback_t	cb_table[ N_GPIO ][ GPIO_BITS ]	= { NULL };
 
 void irq_handler( int num )
 {
@@ -34,7 +44,7 @@ void irq_handler( int num )
 	flags	= GPIO_GpioGetInterruptFlags( gpio_ptr[ num ] );
 	GPIO_GpioClearInterruptFlags( gpio_ptr[ num ], flags );
 	
-	for ( int i = 0; i < 32; i++ )
+	for ( int i = 0; i < GPIO_BITS; i++ )
 		if ( cb_table[ num ][ i ] )
 			(cb_table[ num ][ i ])();
 }
@@ -59,8 +69,6 @@ void InterruptIn::fall( utick_callback_t callback )
 
 void InterruptIn::regist( utick_callback_t callback, gpio_interrupt_config_t type )
 {
-	static	IRQn_Type	irqs[]	= GPIO_IRQS;
-	
 	/* Init input switch GPIO. */
 	#if (defined(FSL_FEATURE_PORT_HAS_NO_INTERRUPT) && FSL_FEATURE_PORT_HAS_NO_INTERRUPT)
 		GPIO_SetPinInterruptConfig( gpio_n, gpio_pin, type );
@@ -68,7 +76,7 @@ void InterruptIn::regist( utick_callback_t callback, gpio_interrupt_config_t typ
 		PORT_SetPinInterruptConfig( gpio_n, gpio_pin, type );
 	#endif
 
-	for ( int i = 0; i < sizeof( irqs ) / sizeof( IRQn_Type ); i++ )
+	for ( int i = 0; i < N_GPIO; i++ )
 	{
 		PRINTF( "IRQ ? %d\r\n", i );
 		if ( gpio_ptr[i] == gpio_n )

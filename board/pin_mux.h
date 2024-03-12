@@ -357,6 +357,20 @@ void BOARD_InitBootPins(void);
 #define BOARD_INITPINS_SW2_PIN_MASK (1U << 29U)      /*!<@brief PORT pin mask */
                                                      /* @} */
 
+/*! @name PORT1_7 (number 1), SW3
+  @{ */
+
+/* Symbols to be used with GPIO driver */
+#define BOARD_INITPINS_SW3_GPIO GPIO1               /*!<@brief GPIO peripheral base pointer */
+#define BOARD_INITPINS_SW3_GPIO_PIN 7U              /*!<@brief GPIO pin number */
+#define BOARD_INITPINS_SW3_GPIO_PIN_MASK (1U << 7U) /*!<@brief GPIO pin mask */
+
+/* Symbols to be used with PORT driver */
+#define BOARD_INITPINS_SW3_PORT PORT1               /*!<@brief PORT peripheral base pointer */
+#define BOARD_INITPINS_SW3_PIN 7U                   /*!<@brief PORT pin number */
+#define BOARD_INITPINS_SW3_PIN_MASK (1U << 7U)      /*!<@brief PORT pin mask */
+                                                    /* @} */
+
 /*!
  * @brief Configures pin routing and optionally pin electrical features.
  *

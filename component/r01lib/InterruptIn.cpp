@@ -47,15 +47,25 @@ InterruptIn::InterruptIn( uint8_t pin_num )
 
 InterruptIn::~InterruptIn() {}
 
+void InterruptIn::rise( utick_callback_t callback )
+{
+	regist( callback, kGPIO_InterruptRisingEdge );
+}
+
 void InterruptIn::fall( utick_callback_t callback )
+{
+	regist( callback, kGPIO_InterruptFallingEdge );
+}
+
+void InterruptIn::regist( utick_callback_t callback, gpio_interrupt_config_t type )
 {
 	static	IRQn_Type	irqs[]	= GPIO_IRQS;
 	
 	/* Init input switch GPIO. */
 	#if (defined(FSL_FEATURE_PORT_HAS_NO_INTERRUPT) && FSL_FEATURE_PORT_HAS_NO_INTERRUPT)
-		GPIO_SetPinInterruptConfig( gpio_n, gpio_pin, kGPIO_InterruptFallingEdge );
+		GPIO_SetPinInterruptConfig( gpio_n, gpio_pin, type );
 	#else
-		PORT_SetPinInterruptConfig( gpio_n, gpio_pin, kGPIO_InterruptFallingEdge );
+		PORT_SetPinInterruptConfig( gpio_n, gpio_pin, type );
 	#endif
 
 	for ( int i = 0; i < sizeof( irqs ) / sizeof( IRQn_Type ); i++ )

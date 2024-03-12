@@ -22,7 +22,9 @@ public:
 	InterruptIn( uint8_t pin_num );
 	~InterruptIn();
 	
+	void	rise( utick_callback_t callback );
 	void	fall( utick_callback_t callback );
+	void	regist( utick_callback_t callback, gpio_interrupt_config_t type );
 	
 	utick_callback_t cb;
 };

@@ -40,12 +40,18 @@ void cb( void )
 
 int main(void)
 {
-#if 0
-	InterruptIn	in( D1 );
-	in.fall( NULL );
+#if 1
+	InterruptIn	in( SW2 );
+	in.fall( cb );
 
 	while ( true )
 	{
+		if ( g_Flag )
+		{
+			g_Flag	= false;
+			PRINTF( "!!!\r\n", in & 0x01 );
+		}
+		
 		PRINTF( "%d\r\n", in & 0x01 );
 		wait( 0.1 );
 	}

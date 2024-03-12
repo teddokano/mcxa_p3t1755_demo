@@ -37,7 +37,8 @@ static gpio_pin pins[]	= {
 	{ A2_GPIO,  A2_GPIO_PIN  },
 	{ A3_GPIO,  A3_GPIO_PIN  },
 	{ A4_GPIO,  A4_GPIO_PIN  },
-	{ A5_GPIO,  A5_GPIO_PIN  }
+	{ A5_GPIO,  A5_GPIO_PIN  },
+	{ SW2_GPIO,  SW2_GPIO_PIN  }
 };
 
 extern "C" {

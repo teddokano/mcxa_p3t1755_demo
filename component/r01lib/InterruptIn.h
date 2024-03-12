@@ -15,6 +15,7 @@ extern "C" {
 #include	"io.h"
 
 
+
 class InterruptIn : public DigitalIn
 {	
 public:
@@ -22,6 +23,8 @@ public:
 	~InterruptIn();
 	
 	void	fall( utick_callback_t callback );
+	
+	utick_callback_t cb;
 };
 
 #endif // R01LIB_INTERRUPTIN_H

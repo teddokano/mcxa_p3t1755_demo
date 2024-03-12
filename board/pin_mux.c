@@ -39,6 +39,7 @@ pin_labels:
 - {pin_num: '7', pin_signal: P1_13/TRIG_IN3/LPUART2_TXD/CT2_MAT3/ADC0_A11, label: ARD_A2, identifier: ARD_A2}
 - {pin_num: '14', pin_signal: P2_0/WUU0_IN18/TRIG_IN6/LPUART0_RXD/CT_INP16/CT2_MAT0/ADC0_A0, label: ARD_A3, identifier: ARD_A3}
 - {pin_num: '54', pin_signal: P0_16/WUU0_IN2/LPI2C0_SDA/LPSPI0_PCS2/CT0_MAT0/UTICK_CAP2/I3C0_SDA, label: I3C_SDA}
+- {pin_num: '32', pin_signal: P3_29/WUU0_IN27/ISPMODE_N/CT_INP3/ADC0_A14, label: SW2, identifier: SW2}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -100,6 +101,7 @@ BOARD_InitPins:
   - {pin_num: '54', peripheral: I3C0, signal: SDA, pin_signal: P0_16/WUU0_IN2/LPI2C0_SDA/LPSPI0_PCS2/CT0_MAT0/UTICK_CAP2/I3C0_SDA}
   - {pin_num: '33', peripheral: LPI2C0, signal: SDA, pin_signal: P3_28/WUU0_IN26/TRIG_IN11/LPI2C0_SDA/CT_INP12}
   - {pin_num: '34', peripheral: LPI2C0, signal: SCL, pin_signal: P3_27/TRIG_OUT7/LPI2C0_SCL/CT_INP13}
+  - {pin_num: '32', peripheral: GPIO3, signal: 'GPIO, 29', pin_signal: P3_29/WUU0_IN27/ISPMODE_N/CT_INP3/ADC0_A14}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -476,6 +478,16 @@ void BOARD_InitPins(void)
 
                       /* Pin Multiplex Control: PORT3_28 (pin 33) is configured as LPI2C0_SDA. */
                       | PORT_PCR_MUX(PORT3_PCR28_MUX_mux10)
+
+                      /* Input Buffer Enable: Enables. */
+                      | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    PORT3->PCR[29] = ((PORT3->PCR[29] &
+                       /* Mask bits to zero which are setting */
+                       (~(PORT_PCR_MUX_MASK | PORT_PCR_IBE_MASK)))
+
+                      /* Pin Multiplex Control: PORT3_29 (pin 32) is configured as P3_29. */
+                      | PORT_PCR_MUX(PORT3_PCR29_MUX_mux00)
 
                       /* Input Buffer Enable: Enables. */
                       | PORT_PCR_IBE(PCR_IBE_ibe1));

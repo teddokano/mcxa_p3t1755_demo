@@ -16,6 +16,7 @@ extern "C" {
 #include "board.h"
 #include "fsl_debug_console.h"
 
+#include	"irq.h"
 }
 
 #include	"io.h"
@@ -23,41 +24,20 @@ extern "C" {
 
 void irq_handler( int num );
 
+static	GPIO_Type	*gpio_ptr[]	= GPIO_BASE_PTRS;
 
-void GPIO0_IRQHandler( void )
-{
-	irq_handler( 0 );
-}
-
-void GPIO1_IRQHandler( void )
-{
-	irq_handler( 1 );
-}
-
-void GPIO2_IRQHandler( void )
-{
-	irq_handler( 2 );
-
-}
-
-void GPIO3_IRQHandler( void )
-{
-	irq_handler( 3 );
-}
-
-void GPIO4_IRQHandler( void )
-{
-	irq_handler( 4 );
-}
+utick_callback_t	cb_table[ 4 ][ 32 ]	= { NULL };
 
 void irq_handler( int num )
 {
-	PRINTF( "######################### %d\r\n", num );
-
+	uint32_t	flags;
+	flags	= GPIO_GpioGetInterruptFlags( gpio_ptr[ num ] );
+	GPIO_GpioClearInterruptFlags( gpio_ptr[ num ], flags );
+	
+	for ( int i = 0; i < 32; i++ )
+		if ( cb_table[ num ][ i ] )
+			(cb_table[ num ][ i ])();
 }
-
-
-
 
 
 InterruptIn::InterruptIn( uint8_t pin_num )
@@ -69,6 +49,8 @@ InterruptIn::~InterruptIn() {}
 
 void InterruptIn::fall( utick_callback_t callback )
 {
+	static	IRQn_Type	irqs[]	= GPIO_IRQS;
+	
 	/* Init input switch GPIO. */
 	#if (defined(FSL_FEATURE_PORT_HAS_NO_INTERRUPT) && FSL_FEATURE_PORT_HAS_NO_INTERRUPT)
 		GPIO_SetPinInterruptConfig( gpio_n, gpio_pin, kGPIO_InterruptFallingEdge );
@@ -76,11 +58,16 @@ void InterruptIn::fall( utick_callback_t callback )
 		PORT_SetPinInterruptConfig( gpio_n, gpio_pin, kGPIO_InterruptFallingEdge );
 	#endif
 
-#if 1
-	EnableIRQ( GPIO0_IRQn );
-	EnableIRQ( GPIO1_IRQn );
-	EnableIRQ( GPIO2_IRQn );
-	EnableIRQ( GPIO3_IRQn );
-//	EnableIRQ( GPIO4_IRQn );
-#endif
+	for ( int i = 0; i < sizeof( irqs ) / sizeof( IRQn_Type ); i++ )
+	{
+		PRINTF( "IRQ ? %d\r\n", i );
+		if ( gpio_ptr[i] == gpio_n )
+		{
+			PRINTF( "IRQ = %d\r\n", i );
+			
+			cb_table[ i ][ gpio_pin ]	= callback;
+			EnableIRQ( irqs[ i ] );
+			break;
+		}
+	}
 }

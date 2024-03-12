@@ -40,6 +40,7 @@ pin_labels:
 - {pin_num: '14', pin_signal: P2_0/WUU0_IN18/TRIG_IN6/LPUART0_RXD/CT_INP16/CT2_MAT0/ADC0_A0, label: ARD_A3, identifier: ARD_A3}
 - {pin_num: '54', pin_signal: P0_16/WUU0_IN2/LPI2C0_SDA/LPSPI0_PCS2/CT0_MAT0/UTICK_CAP2/I3C0_SDA, label: I3C_SDA}
 - {pin_num: '32', pin_signal: P3_29/WUU0_IN27/ISPMODE_N/CT_INP3/ADC0_A14, label: SW2, identifier: SW2}
+- {pin_num: '1', pin_signal: P1_7/WUU0_IN9/TRIG_OUT2/LPUART2_CTS_B/CT_INP7/ADC0_A23, label: SW3, identifier: SW3}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -102,6 +103,7 @@ BOARD_InitPins:
   - {pin_num: '33', peripheral: LPI2C0, signal: SDA, pin_signal: P3_28/WUU0_IN26/TRIG_IN11/LPI2C0_SDA/CT_INP12}
   - {pin_num: '34', peripheral: LPI2C0, signal: SCL, pin_signal: P3_27/TRIG_OUT7/LPI2C0_SCL/CT_INP13}
   - {pin_num: '32', peripheral: GPIO3, signal: 'GPIO, 29', pin_signal: P3_29/WUU0_IN27/ISPMODE_N/CT_INP3/ADC0_A14}
+  - {pin_num: '1', peripheral: GPIO1, signal: 'GPIO, 7', pin_signal: P1_7/WUU0_IN9/TRIG_OUT2/LPUART2_CTS_B/CT_INP7/ADC0_A23}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -296,6 +298,16 @@ void BOARD_InitPins(void)
     PORT_SetPinMux(BOARD_INITPINS_ARD_D1_PORT, BOARD_INITPINS_ARD_D1_PIN, kPORT_MuxAlt0);
 
     PORT1->PCR[5] = ((PORT1->PCR[5] &
+                      /* Mask bits to zero which are setting */
+                      (~(PORT_PCR_IBE_MASK)))
+
+                     /* Input Buffer Enable: Enables. */
+                     | PORT_PCR_IBE(PCR_IBE_ibe1));
+
+    /* PORT1_7 (pin 1) is configured as P1_7 */
+    PORT_SetPinMux(BOARD_INITPINS_SW3_PORT, BOARD_INITPINS_SW3_PIN, kPORT_MuxAlt0);
+
+    PORT1->PCR[7] = ((PORT1->PCR[7] &
                       /* Mask bits to zero which are setting */
                       (~(PORT_PCR_IBE_MASK)))
 

@@ -22,7 +22,7 @@ r01lib_start;	/* *** place this word before making instance of r01lib classes **
 
 #ifdef	ENABLE_I3C
 	#ifdef	LOWER_I3C_FREQUENCY
-		I3C		i3c( 400000, 1500000,  4000000 );
+		I3C		i3c( 400000, 1500000,  4000000 );	//	I2C_FREQ, I3C_OD_FREQ, I3C_PP_FREQ
 	#else
 		I3C			i3c;
 	#endif

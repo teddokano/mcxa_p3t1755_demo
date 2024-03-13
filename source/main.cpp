@@ -10,6 +10,7 @@
 r01lib_start;	/* *** place this word before making instance of r01lib classes *** */
 
 #include	"pin_control.h"
+#include	<time.h>
 
 #define	ENABLE_I3C
 #define	LOWER_I3C_FREQUENCY
@@ -22,7 +23,7 @@ r01lib_start;	/* *** place this word before making instance of r01lib classes **
 
 #ifdef	ENABLE_I3C
 	#ifdef	LOWER_I3C_FREQUENCY
-		I3C		i3c( 400000, 1500000,  4000000 );
+		I3C		i3c( 400000, 1500000,  4000000 );	//	I2C_FREQ, I3C_OD_FREQ, I3C_PP_FREQ
 	#else
 		I3C			i3c;
 	#endif
@@ -38,6 +39,14 @@ DigitalOut	r(    RED   );	//	== D5 pin
 DigitalOut	g(    GREEN );	//	== D6 pin
 DigitalOut	b(    BLUE  );	//	"BLUE" (D3) is a dummy LED difinition. This pin is overriden by PWM output
 DigitalOut	trig( D2    );	//	IBI detection trigger. Pin D0~D2, D4~D13, D18, D19 and A0~A5 can be used
+Ticker		t;
+
+volatile bool	t_flag	=false;
+
+void t_callback( void )
+{
+	t_flag	= true;
+}
 
 void	DAA_set_dynamic_ddress_from_static_ddress( uint8_t static_address, uint8_t dynamic_address );
 
@@ -73,16 +82,21 @@ int main(void)
 	float	temp;
 	uint8_t	ibi_addr;
 
+	t.attach( t_callback, 1 );
+
 	while ( true )
 	{
 		if ( (ibi_addr	= i3c.check_IBI()) )
-			PRINTF("*** IBI : Got IBI from target_address: 7’h%02X (0x%02X)\r\n", ibi_addr, ibi_addr << 1 );
+			PRINTF("%7.2f: *** IBI : Got IBI from target_address: 7’h%02X (0x%02X)\r\n", (float)clock() / CLOCKS_PER_SEC, ibi_addr, ibi_addr << 1 );
 
-		temp	= p3t1755;
-		PRINTF( "Temperature: %8.4f˚C\r\n", temp );
+		if ( t_flag )
+		{
+			t_flag	=false;
+			temp	= p3t1755;
+			PRINTF( "%7.2f: Temperature: %8.4f˚C\r\n", (float)clock() / CLOCKS_PER_SEC, temp );
 
-		led_set_color( temp, ref_temp );
-		wait( 1 );
+			led_set_color( temp, ref_temp );
+		}
 	}
 }
 

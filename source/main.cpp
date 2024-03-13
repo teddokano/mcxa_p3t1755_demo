@@ -87,13 +87,13 @@ int main(void)
 	while ( true )
 	{
 		if ( (ibi_addr	= i3c.check_IBI()) )
-			PRINTF("%7.2f: *** IBI : Got IBI from target_address: 7’h%02X (0x%02X)\r\n", (float)clock() / CLOCKS_PER_SEC, ibi_addr, ibi_addr << 1 );
+			PRINTF("Read at %7.2f sec: *** IBI : Got IBI from target_address: 7’h%02X (0x%02X)\r\n", (float)clock() / CLOCKS_PER_SEC, ibi_addr, ibi_addr << 1 );
 
 		if ( t_flag )
 		{
 			t_flag	=false;
 			temp	= p3t1755;
-			PRINTF( "%7.2f: Temperature: %8.4f˚C\r\n", (float)clock() / CLOCKS_PER_SEC, temp );
+			PRINTF( "Read at %7.2f sec: Temperature: %8.4f˚C\r\n", (float)clock() / CLOCKS_PER_SEC, temp );
 
 			led_set_color( temp, ref_temp );
 		}

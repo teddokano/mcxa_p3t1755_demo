@@ -41,11 +41,16 @@ DigitalOut	b(    BLUE  );	//	"BLUE" (D3) is a dummy LED difinition. This pin is 
 DigitalOut	trig( D2    );	//	IBI detection trigger. Pin D0~D2, D4~D13, D18, D19 and A0~A5 can be used
 Ticker		t;
 
-volatile bool	t_flag	=false;
+bool	msg_flag	= false;
 
 void t_callback( void )
 {
-	t_flag	= true;
+	static int	count	= 0;
+	
+	led_control_callback();
+	
+	if ( !( count++ % 100 ) )
+		msg_flag	= true;
 }
 
 void	DAA_set_dynamic_ddress_from_static_ddress( uint8_t static_address, uint8_t dynamic_address );
@@ -82,17 +87,17 @@ int main(void)
 	float	temp;
 	uint8_t	ibi_addr;
 
-	t.attach( t_callback, 1 );
+	t.attach( t_callback, 0.01 );
 
 	while ( true )
 	{
 		if ( (ibi_addr	= i3c.check_IBI()) )
 			PRINTF("Read at %7.2f sec: *** IBI : Got IBI from target_address: 7’h%02X (0x%02X)\r\n", (float)clock() / CLOCKS_PER_SEC, ibi_addr, ibi_addr << 1 );
 
-		if ( t_flag )
+		if ( msg_flag )
 		{
-			t_flag	=false;
-			temp	= p3t1755;
+			msg_flag	= false;
+			temp		= p3t1755;
 			PRINTF( "Read at %7.2f sec: Temperature: %8.4f˚C\r\n", (float)clock() / CLOCKS_PER_SEC, temp );
 
 			led_set_color( temp, ref_temp );

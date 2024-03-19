@@ -10,6 +10,7 @@
 r01lib_start;	/* *** place this word before making instance of r01lib classes *** */
 
 #include	"pin_control.h"
+#include	"temp_sensor/P3T1755.h"
 #include	<time.h>
 
 #define	ENABLE_I3C
